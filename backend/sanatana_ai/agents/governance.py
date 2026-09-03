@@ -36,7 +36,7 @@ class AgentContract:
     provenance_required: bool
 
     @classmethod
-    def from_entry(cls, entry: dict[str, Any]) -> "AgentContract":
+    def from_entry(cls, entry: dict[str, Any]) -> AgentContract:
         version = entry["version"]
         if not _SEMVER.fullmatch(version):
             raise AgentGovernanceError(f"invalid agent contract version: {version}")
@@ -66,7 +66,7 @@ class SchemaRegistry:
             self._schemas[schema_id] = schema
 
     @classmethod
-    def from_registry(cls, registry_path: Path, repository_root: Path) -> "SchemaRegistry":
+    def from_registry(cls, registry_path: Path, repository_root: Path) -> SchemaRegistry:
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         entries = registry.get("schemas")
         if not isinstance(entries, dict) or not entries:
@@ -102,7 +102,7 @@ class AgentGovernance:
         registry_path: Path,
         contract_schema_path: Path,
         schemas: SchemaRegistry,
-    ) -> "AgentGovernance":
+    ) -> AgentGovernance:
         try:
             entries = load_registry(registry_path, contract_schema_path)
         except AgentRegistryError as exc:
