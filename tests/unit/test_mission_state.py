@@ -1,5 +1,4 @@
 import pytest
-
 from sanatana_ai.missions.state import MissionState
 
 
