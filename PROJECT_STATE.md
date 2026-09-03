@@ -15,7 +15,7 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `feature/ci-quality-gates` (next branch to be created from current main)
+- Active implementation branch: `feature/ci-quality-gates`
 - Repository visibility: private
 - PR #1: merged into `main` with merge commit `1bfa255511b1083562d1a0c4033507474c556f34`
 - PR #2: merged into `foundation/phase-0`
@@ -24,8 +24,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #16: merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`
 - Issue #3: completed and closed through PR #14
 - Issue #5: completed and closed after PR #15 and PR #16
+- Issue #4: open, CI quality-gate expansion in progress
 - Conversation records exist under `governance/conversations/`
-- GitHub issues #4 and #6 through #13 remain the principal open Foundation and post-Foundation workstreams.
+- GitHub issues #6 through #13 remain the principal open post-Foundation workstreams.
 
 ## Foundation completed
 
@@ -76,14 +77,16 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #16 was reviewed and merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`.
 - CI run 75 passed on the PR #16 merge commit.
 - Issue #5 was closed as completed after implementation, CI, review, documentation, and merge gates passed.
-- Issue #4 remains open because the broader quality-gate scope is not yet complete.
+- CI quality-gate expansion is in progress on `feature/ci-quality-gates`.
+- Issue #4 remains open until the expanded quality gates are fully implemented and validated.
 
 ## Current work
 
-1. Strengthen CI quality gates under issue #4.
-2. Implement execution provenance and validation-outcome persistence under issue #6.
-3. Continue through mission orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #7 through #13.
-4. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
+1. Complete the CI quality-gate expansion under issue #4.
+2. Validate and merge the CI gate increment.
+3. Implement execution provenance and validation-outcome persistence under issue #6.
+4. Continue through mission orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #7 through #13.
+5. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
 
 ## Issue maintenance policy
 
@@ -119,8 +122,7 @@ Genuine project branches:
 - `feature/checkpoint-recovery`
 - `feature/agent-governance`
 - `feature/execution-controls`
-
-Next required branch: `feature/ci-quality-gates`.
+- `feature/ci-quality-gates`
 
 Other similarly named branches are accidental historical artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
 
