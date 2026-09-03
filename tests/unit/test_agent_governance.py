@@ -34,6 +34,7 @@ def make_schema_registry(tmp_path: Path) -> SchemaRegistry:
                 "type": "object",
                 "required": [
                     "artifact_id",
+                    "artifact_type",
                     "schema_id",
                     "version",
                     "owner_agent_id",
@@ -42,6 +43,7 @@ def make_schema_registry(tmp_path: Path) -> SchemaRegistry:
                 ],
                 "properties": {
                     "artifact_id": {"type": "string", "minLength": 1},
+                    "artifact_type": {"type": "string", "minLength": 1},
                     "schema_id": {"const": SCHEMA_ID},
                     "version": {"const": "1.0.0"},
                     "owner_agent_id": {"type": "string", "minLength": 1},
@@ -78,6 +80,7 @@ def make_contract(*, provenance_required: bool = True) -> AgentContract:
 def make_artifact(*, owner_agent_id: str = "research.source", value: str = "ok") -> StructuredArtifact:
     return StructuredArtifact(
         artifact_id="artifact-1",
+        artifact_type="source_artifact",
         schema_id=SCHEMA_ID,
         version="1.0.0",
         owner_agent_id=owner_agent_id,
@@ -138,14 +141,28 @@ def test_governance_accepts_declared_permission_and_valid_input(tmp_path: Path) 
     assert governance.authorize_request(request).id == "research.source"
 
 
+def test_governance_rejects_undeclared_input_artifact_type(tmp_path: Path) -> None:
+    governance = make_governance(tmp_path)
+    artifact = StructuredArtifact(
+        "artifact-1", "unexpected", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}, ("prov-1",)
+    )
+
+    with pytest.raises(AgentGovernanceError, match="does not declare input artifact type"):
+        governance.authorize_request(
+            AgentRequest("mission-test", "task-a", "research.source", input_artifacts=(artifact,))
+        )
+
+
 def test_governance_rejects_unregistered_artifact_schema(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
     artifact = StructuredArtifact(
         "artifact-1",
+        "source_request",
         "sanatanaai://schemas/not-registered/v1",
         "1.0.0",
         "research.source",
         {"value": "ok"},
+        ("prov-1",),
     )
 
     with pytest.raises(AgentGovernanceError, match="unregistered artifact schema"):
@@ -157,11 +174,24 @@ def test_governance_rejects_unregistered_artifact_schema(tmp_path: Path) -> None
 def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
     invalid = StructuredArtifact(
-        "artifact-1", SCHEMA_ID, "1.0.0", "research.source", {"wrong": "payload"}
+        "artifact-1", "source_artifact", SCHEMA_ID, "1.0.0", "research.source", {"wrong": "payload"}
     )
     result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(invalid,))
 
     with pytest.raises(AgentGovernanceError, match="failed schema validation"):
+        GovernedAgentExecutor(EchoExecutor(result), governance).execute(
+            AgentRequest("mission-test", "task-a", "research.source")
+        )
+
+
+def test_governed_executor_rejects_undeclared_output_artifact_type(tmp_path: Path) -> None:
+    governance = make_governance(tmp_path)
+    artifact = StructuredArtifact(
+        "artifact-1", "unexpected", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}, ("prov-1",)
+    )
+    result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,))
+
+    with pytest.raises(AgentGovernanceError, match="does not declare output artifact type"):
         GovernedAgentExecutor(EchoExecutor(result), governance).execute(
             AgentRequest("mission-test", "task-a", "research.source")
         )
@@ -186,7 +216,7 @@ def test_governed_executor_rejects_output_owned_by_other_agent(tmp_path: Path) -
 def test_governed_executor_requires_provenance_when_contract_requires_it(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
     artifact = StructuredArtifact(
-        "artifact-1", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}
+        "artifact-1", "source_artifact", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}
     )
     result = AgentResult(
         "mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,)
