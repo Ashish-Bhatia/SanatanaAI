@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from sanatana_ai.agents.registry import AgentRegistryError, load_registry
 
 ROOT = Path(__file__).parents[2]
