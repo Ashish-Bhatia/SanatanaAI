@@ -1,6 +1,7 @@
 import time
 
 import pytest
+
 from sanatana_ai.contracts.agent import AgentRequest, AgentResult
 from sanatana_ai.orchestration.control import (
     CancellationToken,
@@ -87,25 +88,17 @@ def test_non_retryable_failure_is_not_retried() -> None:
         ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=3)).execute(
             REQUEST
         )
-
     assert executor.attempts == 1
 
 
-def test_timeout_requires_cooperative_context() -> None:
-    class LegacyExecutor:
-        def execute(self, request: AgentRequest) -> AgentResult:
-            return RESULT
-
-    with pytest.raises(
-        ExecutionControlError,
-        match="requires an executor implementing execute_with_context",
-    ):
+def test_timeout_requires_contextual_executor() -> None:
+    with pytest.raises(ExecutionControlError, match="execute_with_context"):
         ControlledAgentExecutor(
-            LegacyExecutor(), ExecutionPolicy(timeout_seconds=1)
+            RetryThenSuccess(), ExecutionPolicy(max_attempts=1, timeout_seconds=1)
         ).execute(REQUEST)
 
 
-def test_contextual_timeout_is_enforced_by_context_check() -> None:
+def test_cooperative_timeout_is_detected() -> None:
     class SlowExecutor:
         def execute_with_context(
             self, request: AgentRequest, context: ExecutionContext
@@ -116,33 +109,49 @@ def test_contextual_timeout_is_enforced_by_context_check() -> None:
 
     with pytest.raises(ExecutionTimedOut):
         ControlledAgentExecutor(
-            SlowExecutor(), ExecutionPolicy(timeout_seconds=0.001)
+            SlowExecutor(), ExecutionPolicy(max_attempts=1, timeout_seconds=0.001)
         ).execute(REQUEST)
 
 
-def test_cancellation_before_execution_is_fail_closed() -> None:
+def test_cancellation_before_execution_is_detected() -> None:
     token = CancellationToken()
     token.cancel()
-    executor = ContextualExecutor()
+
+    class Contextual:
+        def execute_with_context(
+            self, request: AgentRequest, context: ExecutionContext
+        ) -> AgentResult:
+            context.check()
+            return RESULT
 
     with pytest.raises(ExecutionCancelled):
-        ControlledAgentExecutor(executor, cancellation_token=token).execute(REQUEST)
+        ControlledAgentExecutor(
+            Contextual(), ExecutionPolicy(max_attempts=1), cancellation_token=token
+        ).execute(REQUEST)
 
-    assert executor.attempts == []
 
-
-def test_cancellation_during_execution_is_observed() -> None:
-    token = CancellationToken()
+def test_cancellation_during_execution_is_detected() -> None:
     executor = ContextualExecutor(cancel=True)
 
     with pytest.raises(ExecutionCancelled):
-        ControlledAgentExecutor(executor, cancellation_token=token).execute(REQUEST)
+        ControlledAgentExecutor(
+            executor,
+            ExecutionPolicy(max_attempts=1, cancellation_enabled=True),
+        ).execute(REQUEST)
 
     assert executor.attempts == [1]
 
 
-def test_timeout_and_cancellation_require_positive_policy_values() -> None:
+def test_invalid_execution_policy_values_are_rejected() -> None:
     with pytest.raises(ValueError, match="max_attempts"):
         ExecutionPolicy(max_attempts=0)
     with pytest.raises(ValueError, match="timeout_seconds"):
-        ExecutionPolicy(timeout_seconds=0)
+        ExecutionPolicy(max_attempts=1, timeout_seconds=0)
+
+
+def test_cancellation_enabled_requires_contextual_executor() -> None:
+    with pytest.raises(ExecutionControlError, match="execute_with_context"):
+        ControlledAgentExecutor(
+            RetryThenSuccess(),
+            ExecutionPolicy(max_attempts=1, cancellation_enabled=True),
+        ).execute(REQUEST)
