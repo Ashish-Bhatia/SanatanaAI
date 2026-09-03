@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0.0",
+  "schemas": {
+    "sanatanaai://schemas/structured-artifact/v1": "agents/schemas/structured-artifact.schema.json"
+  }
+}
