@@ -32,33 +32,39 @@ class ExecutionService:
         if task.status != TaskStatus.READY:
             raise ValueError(f"task {task.task_id} is not ready: {task.status}")
 
-        task.transition_to(TaskStatus.RUNNING)
-        self.checkpoint_store.save(
-            new_checkpoint(checkpoint_id, task.mission_id, task.task_id, task.status.value)
+        # Durable checkpoint first. Task state must never advance beyond the last
+        # successfully persisted checkpoint.
+        running_checkpoint = new_checkpoint(
+            checkpoint_id, task.mission_id, task.task_id, TaskStatus.RUNNING.value
         )
+        self.checkpoint_store.save(running_checkpoint)
+        task.transition_to(TaskStatus.RUNNING)
 
         try:
             result = executor.execute(request)
             self._validate_result(task, result)
         except Exception as exc:
-            task.transition_to(TaskStatus.FAILED)
-            self.checkpoint_store.save(
-                new_checkpoint(f"{checkpoint_id}-failed", task.mission_id, task.task_id, task.status.value)
+            failed_checkpoint = new_checkpoint(
+                f"{checkpoint_id}-failed",
+                task.mission_id,
+                task.task_id,
+                TaskStatus.FAILED.value,
             )
+            self.checkpoint_store.save(failed_checkpoint)
+            task.transition_to(TaskStatus.FAILED)
             if isinstance(exc, ValueError):
                 raise
             raise RuntimeError(f"agent execution failed for task {task.task_id}") from exc
 
-        if result.status == TaskStatus.COMPLETED.value:
-            task.transition_to(TaskStatus.COMPLETED)
-        elif result.status == TaskStatus.FAILED.value:
-            task.transition_to(TaskStatus.FAILED)
-        else:
-            task.transition_to(TaskStatus.BLOCKED)
-
-        self.checkpoint_store.save(
-            new_checkpoint(f"{checkpoint_id}-result", task.mission_id, task.task_id, task.status.value)
+        terminal_status = _terminal_status(result.status)
+        terminal_checkpoint = new_checkpoint(
+            f"{checkpoint_id}-result",
+            task.mission_id,
+            task.task_id,
+            terminal_status.value,
         )
+        self.checkpoint_store.save(terminal_checkpoint)
+        task.transition_to(terminal_status)
         return result
 
     @staticmethod
@@ -76,3 +82,11 @@ class ExecutionService:
             raise ValueError("agent result does not match task agent")
         if result.status not in {status.value for status in TaskStatus}:
             raise ValueError(f"agent result has invalid status: {result.status}")
+
+
+def _terminal_status(status: str) -> TaskStatus:
+    if status == TaskStatus.COMPLETED.value:
+        return TaskStatus.COMPLETED
+    if status == TaskStatus.FAILED.value:
+        return TaskStatus.FAILED
+    return TaskStatus.BLOCKED
