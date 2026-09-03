@@ -104,9 +104,7 @@ def make_governance(tmp_path: Path) -> AgentGovernance:
 
 def test_governance_loads_repository_registry() -> None:
     root = Path(__file__).parents[2]
-    schemas = SchemaRegistry.from_registry(
-        root / "agents/registry/artifact-schemas.json", root
-    )
+    schemas = SchemaRegistry.from_registry(root / "agents/registry/artifact-schemas.json", root)
     governance = AgentGovernance.from_registry(
         root / "agents/registry/foundation.agents.json",
         root / "agents/schemas/agent-contract.schema.json",
@@ -151,7 +149,9 @@ def test_governance_rejects_undeclared_input_artifact_type(tmp_path: Path) -> No
     governance = make_governance(tmp_path)
     artifact = make_artifact(artifact_type="unexpected")
 
-    with pytest.raises(AgentGovernanceError, match="does not declare input artifact type"):
+    with pytest.raises(
+        AgentGovernanceError, match="does not declare input artifact type"
+    ):
         governance.authorize_request(
             AgentRequest("mission-test", "task-a", "research.source", input_artifacts=(artifact,))
         )
@@ -187,7 +187,9 @@ def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> No
         {"wrong": "payload"},
         invalid.provenance_ids,
     )
-    result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(invalid,))
+    result = AgentResult(
+        "mission-test", "task-a", "research.source", "completed", output_artifacts=(invalid,)
+    )
 
     with pytest.raises(AgentGovernanceError, match="failed schema validation"):
         GovernedAgentExecutor(EchoExecutor(result), governance).execute(
@@ -198,9 +200,13 @@ def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> No
 def test_governed_executor_rejects_undeclared_output_artifact_type(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
     artifact = make_artifact(artifact_type="unexpected")
-    result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,))
+    result = AgentResult(
+        "mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,)
+    )
 
-    with pytest.raises(AgentGovernanceError, match="does not declare output artifact type"):
+    with pytest.raises(
+        AgentGovernanceError, match="does not declare output artifact type"
+    ):
         GovernedAgentExecutor(EchoExecutor(result), governance).execute(
             AgentRequest("mission-test", "task-a", "research.source")
         )
@@ -226,7 +232,11 @@ def test_governed_executor_requires_provenance_when_contract_requires_it(tmp_pat
     governance = make_governance(tmp_path)
     artifact = make_artifact(provenance_ids=())
     result = AgentResult(
-        "mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,)
+        "mission-test",
+        "task-a",
+        "research.source",
+        "completed",
+        output_artifacts=(artifact,),
     )
 
     with pytest.raises(AgentGovernanceError, match="requires provenance"):
@@ -262,6 +272,9 @@ def test_governed_executor_accepts_valid_result(tmp_path: Path) -> None:
         output_artifacts=(make_artifact(),),
     )
 
-    assert GovernedAgentExecutor(EchoExecutor(result), governance).execute(
-        AgentRequest("mission-test", "task-a", "research.source")
-    ) == result
+    assert (
+        GovernedAgentExecutor(EchoExecutor(result), governance).execute(
+            AgentRequest("mission-test", "task-a", "research.source")
+        )
+        == result
+    )
