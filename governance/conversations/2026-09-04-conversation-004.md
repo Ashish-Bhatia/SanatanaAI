@@ -3,7 +3,7 @@
 Date: 2026-09-04
 
 ## Objective
-Verify the genuine SanatanaAI branches and continue Foundation Phase 0 orchestration work without creating additional development branches.
+Continue Foundation Phase 0 orchestration work while preserving verified repository history and the branch/PR workflow.
 
 ## Requirements
 - GitHub remains the source of truth.
@@ -12,6 +12,7 @@ Verify the genuine SanatanaAI branches and continue Foundation Phase 0 orchestra
 - Preserve the PR and CI gate workflow.
 - Continue executable orchestration validation.
 - Keep orchestration independent of a specific AI provider.
+- Record substantive project decisions and implementation outcomes.
 
 ## Decisions
 - Treat `main`, `foundation/phase-0`, and `foundation/orchestration-core` as the genuine project branches.
@@ -21,6 +22,7 @@ Verify the genuine SanatanaAI branches and continue Foundation Phase 0 orchestra
 - Introduce an `AgentExecutor` protocol and `ExecutionService` as the provider-neutral execution boundary.
 - Checkpoint task state before agent execution and after terminal execution outcomes.
 - Fail closed on task/request identity mismatches and execution exceptions.
+- Preserve the historical record in this file when reconciling divergent branch copies; do not silently replace project history with a stale variant.
 
 ## Actions
 - Re-verified PR #2 and the corrected CI results.
@@ -30,15 +32,16 @@ Verify the genuine SanatanaAI branches and continue Foundation Phase 0 orchestra
 - Added execution tests for success, failure, readiness, identity validation, and checkpoint sequencing.
 - Updated architecture and project-state documentation.
 - Re-recorded this conversation in the repository.
+- Reconciled the divergent `conversation-004` file with the copy on `main` without discarding the branch-specific historical record.
 
 ## Validation findings
 - CI run 22 passed for the corrected task-readiness head.
 - CI runs 23 and 24 passed for subsequent registry/conversation corrections.
-- The new execution-boundary increment requires a fresh CI run on its latest head.
+- The execution-boundary increment required a fresh CI run on its latest head.
 
 ## Unresolved
-- PR #2 remains draft until the latest execution increment passes CI and receives review.
-- Native branch protection/ruleset enforcement remains unresolved.
+- PR #2 remained draft until the latest execution increment passed CI and received review.
+- Native branch protection/ruleset enforcement remained unresolved.
 - Accidental branches remain because branch deletion is not available through the current connector.
 - Persistent checkpoint storage and transactional recovery remain future design work.
 
