@@ -39,14 +39,16 @@ class ExecutionService:
 
         try:
             result = executor.execute(request)
+            self._validate_result(task, result)
         except Exception as exc:
             task.transition_to(TaskStatus.FAILED)
             self.checkpoint_store.save(
                 new_checkpoint(f"{checkpoint_id}-failed", task.mission_id, task.task_id, task.status.value)
             )
+            if isinstance(exc, ValueError):
+                raise
             raise RuntimeError(f"agent execution failed for task {task.task_id}") from exc
 
-        self._validate_result(task, result)
         if result.status == TaskStatus.COMPLETED.value:
             task.transition_to(TaskStatus.COMPLETED)
         elif result.status == TaskStatus.FAILED.value:
