@@ -93,9 +93,9 @@ class ControlledAgentExecutor:
 
     def execute(self, request: AgentRequest) -> AgentResult:
         contextual = getattr(self.executor, "execute_with_context", None)
-        if self.policy.requires_context and contextual is None:
+        if (self.policy.requires_context or self.cancellation_token is not None) and contextual is None:
             raise ExecutionControlError(
-                "timeout policy requires an executor implementing execute_with_context"
+                "timeout or cancellation policy requires an executor implementing execute_with_context"
             )
 
         for attempt in range(1, self.policy.max_attempts + 1):
