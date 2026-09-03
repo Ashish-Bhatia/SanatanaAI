@@ -16,32 +16,34 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
 - Repository visibility: private
-- Initial conversation record exists under `governance/conversations/`
+- Conversation records exist under `governance/conversations/`
 
-## Established direction
+## Foundation completed in this increment
 
-SanatanaAI will use a multi-agent architecture with specialized micro-agents, a shared orchestration model for real-time and batch work, provenance-first knowledge artifacts, automated validation, and PR-based delivery.
+- Project README and repository map
+- Project state and phased roadmap
+- Architecture baseline
+- ADR-0001 for multi-agent, provenance-first architecture
+- Agent contract schema and registry rules
+- Requirements governance
+- Mission schema
+- Provenance record schema
+- Codespaces/devcontainer baseline
+- Initial CI validation workflow
+
+## Architecture baseline
+
+SanatanaAI uses specialized micro-agents coordinated by a shared mission/task orchestration model. Real-time and batch execution share core orchestration primitives. Knowledge follows Source -> Text/Manuscript -> Passage -> Claim -> Entity/Relationship -> Article, with provenance required for substantive claims.
 
 ## Current work
 
-Foundation Phase 0 establishes:
+Foundation Phase 0 is not complete. Remaining work:
 
-1. Project governance
-2. Architecture baseline
-3. ADR process
-4. Agent contract baseline
-5. Knowledge/provenance model
-6. Mission/task state model
-7. CI foundation
-8. Development environment conventions
-
-## Next gates
-
-- Complete foundation documentation and schemas.
-- Add executable project scaffolding.
-- Add CI validation for schemas, documentation, formatting, tests, and security.
-- Open a pull request from `foundation/phase-0` to `main`.
-- Review CI results before merge.
+1. Add executable backend/package scaffolding.
+2. Add richer schema validation and contract tests.
+3. Add mission/task and checkpoint implementation primitives.
+4. Add branch/PR governance documentation and automation where supported.
+5. Open and validate the foundation pull request.
 
 ## Constraints
 
