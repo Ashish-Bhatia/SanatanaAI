@@ -94,9 +94,12 @@ def test_execution_service_rejects_request_identity_mismatch() -> None:
         ExecutionService(store).execute_task(task, SuccessfulExecutor(), request, "cp-1")
 
 
-def test_execution_service_rejects_invalid_result_status() -> None:
+def test_execution_service_rejects_invalid_result_and_checkpoints_failure() -> None:
     store = InMemoryCheckpointStore()
     task = make_ready_task()
 
     with pytest.raises(ValueError, match="invalid status"):
         ExecutionService(store).execute_task(task, InvalidResultExecutor(), make_request(), "cp-1")
+
+    assert task.status == TaskStatus.FAILED
+    assert store.latest("mission-test", "task-a").state == TaskStatus.FAILED.value
