@@ -124,3 +124,14 @@ def test_execution_service_does_not_advance_task_when_running_checkpoint_fails()
         ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
 
     assert task.status == TaskStatus.READY
+
+
+def test_execution_service_keeps_task_running_when_terminal_checkpoint_fails() -> None:
+    store: CheckpointStore = FailingCheckpointStore("cp-1-result")
+    task = make_ready_task()
+
+    with pytest.raises(RuntimeError, match="checkpoint persistence failure"):
+        ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+
+    assert task.status == TaskStatus.RUNNING
+    assert store.latest("mission-test", "task-a").state == TaskStatus.RUNNING.value
