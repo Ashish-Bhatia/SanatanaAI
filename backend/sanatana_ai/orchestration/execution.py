@@ -28,12 +28,9 @@ class ExecutionService:
         request: AgentRequest,
         checkpoint_id: str,
     ) -> AgentResult:
+        self._validate_request(task, request)
         if task.status != TaskStatus.READY:
             raise ValueError(f"task {task.task_id} is not ready: {task.status}")
-        if request.task_id != task.task_id or request.mission_id != task.mission_id:
-            raise ValueError("agent request does not match task identity")
-        if request.agent_id != task.agent_id:
-            raise ValueError("agent request does not match task agent")
 
         task.transition_to(TaskStatus.RUNNING)
         self.checkpoint_store.save(
@@ -49,6 +46,7 @@ class ExecutionService:
             )
             raise RuntimeError(f"agent execution failed for task {task.task_id}") from exc
 
+        self._validate_result(task, result)
         if result.status == TaskStatus.COMPLETED.value:
             task.transition_to(TaskStatus.COMPLETED)
         elif result.status == TaskStatus.FAILED.value:
@@ -60,3 +58,19 @@ class ExecutionService:
             new_checkpoint(f"{checkpoint_id}-result", task.mission_id, task.task_id, task.status.value)
         )
         return result
+
+    @staticmethod
+    def _validate_request(task: TaskState, request: AgentRequest) -> None:
+        if request.task_id != task.task_id or request.mission_id != task.mission_id:
+            raise ValueError("agent request does not match task identity")
+        if request.agent_id != task.agent_id:
+            raise ValueError("agent request does not match task agent")
+
+    @staticmethod
+    def _validate_result(task: TaskState, result: AgentResult) -> None:
+        if result.mission_id != task.mission_id or result.task_id != task.task_id:
+            raise ValueError("agent result does not match task identity")
+        if result.agent_id != task.agent_id:
+            raise ValueError("agent result does not match task agent")
+        if result.status not in {status.value for status in TaskStatus}:
+            raise ValueError(f"agent result has invalid status: {result.status}")
