@@ -68,6 +68,19 @@ class SchemaRegistry:
                 )
             self._schemas[schema_id] = schema
 
+    @classmethod
+    def from_registry(cls, registry_path: Path, repository_root: Path) -> "SchemaRegistry":
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        entries = registry.get("schemas")
+        if not isinstance(entries, dict) or not entries:
+            raise AgentGovernanceError("artifact schema registry must contain schemas")
+        paths: dict[str, Path] = {}
+        for schema_id, relative_path in entries.items():
+            if not isinstance(schema_id, str) or not isinstance(relative_path, str):
+                raise AgentGovernanceError("artifact schema registry entries must be strings")
+            paths[schema_id] = repository_root / relative_path
+        return cls(paths)
+
     def validator(self, schema_id: str) -> Draft202012Validator:
         try:
             schema = self._schemas[schema_id]
