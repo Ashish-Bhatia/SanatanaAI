@@ -44,7 +44,9 @@ class ContextualExecutor:
         self.attempts: list[int] = []
         self.cancel = cancel
 
-    def execute_with_context(self, request: AgentRequest, context: ExecutionContext) -> AgentResult:
+    def execute_with_context(
+        self, request: AgentRequest, context: ExecutionContext
+    ) -> AgentResult:
         self.attempts.append(context.attempt)
         if self.cancel:
             context.cancellation_token.cancel()
@@ -54,7 +56,9 @@ class ContextualExecutor:
 
 def test_retry_policy_retries_only_marked_transient_failures() -> None:
     executor = RetryThenSuccess()
-    result = ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=3)).execute(REQUEST)
+    result = ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=3)).execute(
+        REQUEST
+    )
 
     assert result == RESULT
     assert executor.attempts == 3
@@ -64,7 +68,9 @@ def test_retry_policy_stops_at_max_attempts() -> None:
     executor = AlwaysRetryable()
 
     with pytest.raises(RetryableAgentError):
-        ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=2)).execute(REQUEST)
+        ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=2)).execute(
+            REQUEST
+        )
 
     assert executor.attempts == 2
 
@@ -79,7 +85,9 @@ def test_non_retryable_failure_is_not_retried() -> None:
 
     executor = FailingExecutor()
     with pytest.raises(RuntimeError, match="permanent"):
-        ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=3)).execute(REQUEST)
+        ControlledAgentExecutor(executor, ExecutionPolicy(max_attempts=3)).execute(
+            REQUEST
+        )
 
     assert executor.attempts == 1
 
@@ -89,7 +97,10 @@ def test_timeout_requires_cooperative_context() -> None:
         def execute(self, request: AgentRequest) -> AgentResult:
             return RESULT
 
-    with pytest.raises(ExecutionControlError, match="requires an executor implementing execute_with_context"):
+    with pytest.raises(
+        ExecutionControlError,
+        match="requires an executor implementing execute_with_context",
+    ):
         ControlledAgentExecutor(
             LegacyExecutor(), ExecutionPolicy(timeout_seconds=1)
         ).execute(REQUEST)
@@ -97,7 +108,9 @@ def test_timeout_requires_cooperative_context() -> None:
 
 def test_contextual_timeout_is_enforced_by_context_check() -> None:
     class SlowExecutor:
-        def execute_with_context(self, request: AgentRequest, context: ExecutionContext) -> AgentResult:
+        def execute_with_context(
+            self, request: AgentRequest, context: ExecutionContext
+        ) -> AgentResult:
             time.sleep(0.01)
             context.check()
             return RESULT
