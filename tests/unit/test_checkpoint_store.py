@@ -3,8 +3,15 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from sanatana_ai.missions.checkpoint import Checkpoint, InMemoryCheckpointStore, new_checkpoint
-from sanatana_ai.storage.sqlite_checkpoints import SQLiteCheckpointStore, open_sqlite_checkpoint_store
+from sanatana_ai.missions.checkpoint import (
+    Checkpoint,
+    InMemoryCheckpointStore,
+    new_checkpoint,
+)
+from sanatana_ai.storage.sqlite_checkpoints import (
+    SQLiteCheckpointStore,
+    open_sqlite_checkpoint_store,
+)
 
 
 def test_checkpoint_round_trip() -> None:
