@@ -4,7 +4,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from jsonschema import Draft202012Validator
 
@@ -17,6 +17,11 @@ _SEMVER = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 
 class AgentGovernanceError(ValueError):
     """Raised when runtime agent governance rules are violated."""
+
+
+class GovernedExecutor(Protocol):
+    def execute(self, request: AgentRequest) -> AgentResult:
+        ...
 
 
 @dataclass(frozen=True)
@@ -150,3 +155,17 @@ class AgentGovernance:
             raise AgentGovernanceError(
                 f"artifact {artifact.artifact_id} failed schema validation: {details}"
             )
+
+
+@dataclass(frozen=True)
+class GovernedAgentExecutor:
+    """Wrap an executor with deterministic contract and artifact governance."""
+
+    executor: GovernedExecutor
+    governance: AgentGovernance
+
+    def execute(self, request: AgentRequest) -> AgentResult:
+        contract = self.governance.authorize_request(request)
+        result = self.executor.execute(request)
+        self.governance.validate_result(contract, result)
+        return result
