@@ -42,6 +42,37 @@ Agents are specialized units with explicit contracts. A contract defines identit
 
 Critical communication uses structured artifacts. Free-form model output is not treated as authoritative state.
 
+## Orchestration execution boundary
+
+The orchestration layer owns task lifecycle and checkpoint sequencing. Agent implementations sit behind an `AgentExecutor` protocol. This keeps orchestration independent of OpenAI or another provider and permits deterministic test doubles.
+
+Execution flow:
+
+```text
+READY task
+   |
+   v
+Validate task/request identity
+   |
+   v
+RUNNING + checkpoint
+   |
+   v
+AgentExecutor
+   |
+   +--> exception --> FAILED + checkpoint
+   |
+   +--> completed --> COMPLETED + checkpoint
+   |
+   +--> failed --> FAILED + checkpoint
+   |
+   +--> other status --> BLOCKED + checkpoint
+```
+
+The execution service does not publish knowledge. It returns a typed `AgentResult`; downstream validators remain responsible for accepting or rejecting artifacts.
+
+Checkpoint persistence is storage-neutral. The foundation uses an in-memory implementation for deterministic tests. Persistent storage requires a later adapter and transaction/recovery design.
+
 ## Execution model
 
 Real-time and batch execution use the same orchestration primitives.
