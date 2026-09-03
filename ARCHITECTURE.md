@@ -74,6 +74,20 @@ The durable checkpoint is the recovery boundary. Task state must not advance bey
 
 The execution service does not publish knowledge. It returns a typed `AgentResult`; downstream validators remain responsible for accepting or rejecting artifacts.
 
+## Execution controls
+
+Retry, timeout, and cancellation are explicit policy controls rather than implicit executor behavior.
+
+- Retry is allowed only for failures explicitly classified as `RetryableAgentError`.
+- `max_attempts` is bounded and explicit.
+- Timeout is an attempt-scoped deadline exposed through `ExecutionContext.check()`.
+- Cancellation uses a thread-safe `CancellationToken` and is cooperative.
+- Timeout or cancellation control requires an executor implementing `execute_with_context`.
+- Legacy executors remain valid only when no cooperative timeout or cancellation is requested.
+- Timeout and cancellation are not retried implicitly.
+
+The platform does not claim to safely kill arbitrary Python execution. Hard process-level isolation belongs to a future worker runtime if production requirements demand it. See ADR-0004.
+
 ## Checkpoint persistence and recovery
 
 Checkpoint persistence is storage-neutral. The foundation provides an in-memory implementation for deterministic tests and a transactional SQLite reference adapter for durable local persistence.
