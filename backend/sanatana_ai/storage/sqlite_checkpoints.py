@@ -83,9 +83,7 @@ class SQLiteCheckpointStore(CheckpointStore):
                 raise
             stored = _row_to_checkpoint(existing)
             if _checkpoint_identity(stored) != _checkpoint_identity(checkpoint):
-                raise ValueError(
-                    f"checkpoint id already exists: {checkpoint.checkpoint_id}"
-                )
+                raise ValueError(f"checkpoint id already exists: {checkpoint.checkpoint_id}")
 
     def latest(self, mission_id: str, task_id: str) -> Checkpoint | None:
         row = self._connection.execute(
