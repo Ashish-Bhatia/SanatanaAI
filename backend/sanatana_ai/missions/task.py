@@ -44,9 +44,7 @@ class TaskState:
         if status == self.status:
             return
         if status not in self._TRANSITIONS[self.status]:
-            raise InvalidTaskTransition(
-                f"cannot transition task {self.task_id} from {self.status} to {status}"
-            )
+            raise InvalidTaskTransition(f"cannot transition task {self.task_id} from {self.status} to {status}")
         self.status = status
 
 
