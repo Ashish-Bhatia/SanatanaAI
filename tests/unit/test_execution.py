@@ -1,5 +1,4 @@
 import pytest
-
 from sanatana_ai.contracts.agent import AgentRequest, AgentResult
 from sanatana_ai.missions.checkpoint import CheckpointStore, InMemoryCheckpointStore
 from sanatana_ai.missions.task import TaskState, TaskStatus
