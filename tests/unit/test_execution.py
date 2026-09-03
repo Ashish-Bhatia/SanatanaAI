@@ -65,7 +65,9 @@ def make_request() -> AgentRequest:
 def test_execution_service_checkpoints_running_and_completed_states() -> None:
     store = InMemoryCheckpointStore()
     task = make_ready_task()
-    result = ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+    result = ExecutionService(store).execute_task(
+        task, SuccessfulExecutor(), make_request(), "cp-1"
+    )
 
     assert result.status == TaskStatus.COMPLETED.value
     assert task.status == TaskStatus.COMPLETED
