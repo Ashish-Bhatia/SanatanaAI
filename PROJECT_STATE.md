@@ -16,34 +16,36 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
 - Repository visibility: private
+- Open PR: #1, draft
 - Conversation records exist under `governance/conversations/`
 
-## Foundation completed in this increment
+## Foundation completed
 
-- Project README and repository map
-- Project state and phased roadmap
-- Architecture baseline
+- Project README, state, roadmap, and architecture baseline
 - ADR-0001 for multi-agent, provenance-first architecture
-- Agent contract schema and registry rules
-- Requirements governance
-- Mission schema
-- Provenance record schema
-- Codespaces/devcontainer baseline
-- Initial CI validation workflow
+- Agent contract schema and registry governance
+- Mission schema and provenance record schema
+- Reproducible Codespaces/devcontainer baseline
+- Python backend package scaffold
+- Agent request/result contracts
+- Mission checkpoint state primitive
+- Executable JSON Schema validation package
+- Mission task contract schema
+- Unit tests for checkpoint and schema validation
+- CI validation for JSON, foundation files, backend tests, and secret patterns
 
-## Architecture baseline
+## Validation status
 
-SanatanaAI uses specialized micro-agents coordinated by a shared mission/task orchestration model. Real-time and batch execution share core orchestration primitives. Knowledge follows Source -> Text/Manuscript -> Passage -> Claim -> Entity/Relationship -> Article, with provenance required for substantive claims.
+The CI run for the previous head passed. The current head adds schema-validation changes and requires a fresh CI run before this increment is considered validated.
 
 ## Current work
 
-Foundation Phase 0 is not complete. Remaining work:
-
-1. Add executable backend/package scaffolding.
-2. Add richer schema validation and contract tests.
-3. Add mission/task and checkpoint implementation primitives.
-4. Add branch/PR governance documentation and automation where supported.
-5. Open and validate the foundation pull request.
+1. Validate the current PR head in CI.
+2. Add registry entries and registry validation.
+3. Add mission/task dependency and checkpoint primitives.
+4. Add stronger formatting, typing, dependency, security, and documentation gates.
+5. Resolve native branch/ruleset enforcement capability.
+6. Complete and review Foundation Phase 0 before merge.
 
 ## Constraints
 
@@ -55,4 +57,4 @@ Foundation Phase 0 is not complete. Remaining work:
 
 ## Continuity
 
-At the beginning of each substantive session, inspect this file, `ROADMAP.md`, `ARCHITECTURE.md`, active missions, ADRs, agent contracts, and current PR/CI state.
+At the beginning of each substantive session, inspect this file, `ROADMAP.md`, `ARCHITECTURE.md`, active missions, ADRs, agent contracts, current PR/CI state, and conversation records.
