@@ -210,7 +210,9 @@ def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> No
         )
 
 
-def test_governed_executor_rejects_undeclared_output_artifact_type(tmp_path: Path) -> None:
+def test_governed_executor_rejects_undeclared_output_artifact_type(
+    tmp_path: Path,
+) -> None:
     governance = make_governance(tmp_path)
     artifact = make_artifact(artifact_type="unexpected")
     result = AgentResult(
