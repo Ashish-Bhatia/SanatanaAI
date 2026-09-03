@@ -35,26 +35,26 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Executable JSON Schema validation package
 - Mission task contract schema
 - Task lifecycle and dependency-readiness primitives
+- Dependency graph validation with multi-node cycle detection
 - Agent registry loading and validation
 - Storage-neutral execution service boundary
-- Unit tests for checkpoint, schema, registry, task lifecycle, and execution behavior
+- Unit tests for checkpoint, schema, registry, task lifecycle, execution, and dependency-cycle behavior
 - CI validation for JSON, foundation files, backend tests, and secret patterns
 
 ## Validation status
 
-- CI run 22 passed for the corrected task-readiness head.
-- CI runs 23 and 24 passed for the subsequent registry/conversation corrections.
-- The execution-boundary increment is now on `foundation/orchestration-core` and requires its own fresh CI validation.
-- PR #2 remains draft until the implementation is reviewed and its current head passes CI.
+- CI runs 22, 23, 24, and 29 passed on earlier corrected heads.
+- The current `foundation/orchestration-core` head includes the execution-boundary and dependency-cycle increments and requires fresh CI validation.
+- PR #2 remains draft until the current implementation is reviewed and its current head passes CI.
 
 ## Current work
 
-1. Validate the execution-boundary increment in CI.
-2. Review orchestration-core implementation for lifecycle, identity, failure, and checkpoint semantics.
-3. Strengthen checkpoint/resume tests, including recovery from the latest valid checkpoint.
-4. Add stronger formatting, typing, dependency, security, provenance, agent-contract, and documentation gates.
+1. Obtain fresh CI validation for the current orchestration-core head.
+2. Review orchestration-core lifecycle, identity, failure, dependency, and checkpoint semantics.
+3. Define persistent checkpoint transaction and recovery semantics before production persistence.
+4. Strengthen formatting, typing, dependency, security, provenance, agent-contract, documentation, and regression gates.
 5. Resolve native branch/ruleset enforcement capability.
-6. Complete and review Foundation Phase 0 before merge.
+6. Complete and review Foundation Phase 0 before integration.
 
 ## Constraints
 
@@ -73,7 +73,7 @@ Genuine project branches:
 - `foundation/phase-0`
 - `foundation/orchestration-core`
 
-Other similarly named branches are accidental artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
+Other similarly named branches are accidental historical artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
 
 ## Continuity
 
