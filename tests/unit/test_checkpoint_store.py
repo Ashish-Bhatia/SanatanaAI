@@ -3,8 +3,15 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from sanatana_ai.missions.checkpoint import Checkpoint, InMemoryCheckpointStore, new_checkpoint
-from sanatana_ai.storage.sqlite_checkpoints import SQLiteCheckpointStore, open_sqlite_checkpoint_store
+from sanatana_ai.missions.checkpoint import (
+    Checkpoint,
+    InMemoryCheckpointStore,
+    new_checkpoint,
+)
+from sanatana_ai.storage.sqlite_checkpoints import (
+    SQLiteCheckpointStore,
+    open_sqlite_checkpoint_store,
+)
 
 
 def test_checkpoint_round_trip() -> None:
@@ -41,7 +48,9 @@ def test_checkpoint_latest_uses_creation_time_not_insert_order() -> None:
     store = InMemoryCheckpointStore()
     base = datetime(2026, 1, 1, tzinfo=timezone.utc)
     older = Checkpoint("cp-old", "mission-test", "task-a", "running", base)
-    newer = Checkpoint("cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1))
+    newer = Checkpoint(
+        "cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1)
+    )
     store.save(newer)
     store.save(older)
     assert store.latest("mission-test", "task-a") == newer
@@ -105,7 +114,9 @@ def test_sqlite_latest_uses_creation_time_not_insert_order() -> None:
     store = SQLiteCheckpointStore(sqlite3.connect(":memory:"))
     base = datetime(2026, 1, 1, tzinfo=timezone.utc)
     older = Checkpoint("cp-old", "mission-test", "task-a", "running", base)
-    newer = Checkpoint("cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1))
+    newer = Checkpoint(
+        "cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1)
+    )
     store.save(newer)
     store.save(older)
     assert store.latest("mission-test", "task-a") == newer
