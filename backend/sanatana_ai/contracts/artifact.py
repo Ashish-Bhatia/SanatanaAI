@@ -9,6 +9,7 @@ class StructuredArtifact:
     """Immutable artifact exchanged between specialized agents."""
 
     artifact_id: str
+    artifact_type: str
     schema_id: str
     version: str
     owner_agent_id: str
