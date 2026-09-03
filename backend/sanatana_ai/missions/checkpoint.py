@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 
 @dataclass(frozen=True)
@@ -60,7 +60,7 @@ def new_checkpoint(checkpoint_id: str, mission_id: str, task_id: str, state: str
         mission_id=mission_id,
         task_id=task_id,
         state=state,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )
     validate_checkpoint(checkpoint)
     return checkpoint
