@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from sanatana_ai.agents.governance import (
     AgentContract,
     AgentGovernance,
