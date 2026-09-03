@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "agents": [
+    {
+      "id": "orchestration.mission",
+      "version": "1.0.0",
+      "responsibility": "Create, track, and checkpoint mission lifecycle state.",
+      "inputs": ["mission_request"],
+      "outputs": ["mission_state", "task_plan"],
+      "permissions": ["mission.read", "mission.write", "task.write"],
+      "validation": ["mission_schema", "task_schema"],
+      "failure_handling": ["retry_transient", "checkpoint_before_mutation", "fail_closed"],
+      "provenance_required": false,
+      "forbidden_behaviors": ["publish_knowledge", "invent_evidence"]
+    },
+    {
+      "id": "validation.schema",
+      "version": "1.0.0",
+      "responsibility": "Validate structured artifacts against registered JSON Schemas.",
+      "inputs": ["artifact", "schema"],
+      "outputs": ["validation_result"],
+      "permissions": ["artifact.read", "schema.read"],
+      "validation": ["json_schema_2020_12"],
+      "failure_handling": ["return_structured_errors", "fail_closed"],
+      "provenance_required": false,
+      "forbidden_behaviors": ["mutate_artifact", "suppress_validation_errors"]
+    }
+  ]
+}
