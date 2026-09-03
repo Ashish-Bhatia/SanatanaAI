@@ -51,7 +51,7 @@ class TaskState:
 
 
 def resolve_task_readiness(tasks: list[TaskState]) -> None:
-    """Update pending/blocked tasks from dependency state, failing closed on invalid graphs."""
+    """Update task readiness from dependency state, failing closed on invalid graphs."""
     by_id = {task.task_id: task for task in tasks}
     if len(by_id) != len(tasks):
         raise ValueError("duplicate task_id detected")
@@ -68,10 +68,12 @@ def resolve_task_readiness(tasks: list[TaskState]) -> None:
             continue
         dependencies = [by_id[dependency] for dependency in task.dependencies]
         if any(dep.status in {TaskStatus.FAILED, TaskStatus.CANCELLED} for dep in dependencies):
-            if task.status != TaskStatus.BLOCKED:
+            if task.status in {TaskStatus.PENDING, TaskStatus.READY}:
                 task.transition_to(TaskStatus.BLOCKED)
         elif all(dep.status == TaskStatus.COMPLETED for dep in dependencies):
             if task.status in {TaskStatus.PENDING, TaskStatus.BLOCKED, TaskStatus.FAILED}:
                 task.transition_to(TaskStatus.READY)
         elif task.status == TaskStatus.READY:
+            task.transition_to(TaskStatus.BLOCKED)
+        elif task.status == TaskStatus.PENDING and dependencies:
             task.transition_to(TaskStatus.BLOCKED)
