@@ -55,23 +55,41 @@ READY task
 Validate task/request identity
    |
    v
-RUNNING + checkpoint
+Persist RUNNING checkpoint
+   |
+   v
+Transition task to RUNNING
    |
    v
 AgentExecutor
    |
-   +--> exception --> FAILED + checkpoint
+   +--> exception/invalid result --> Persist FAILED checkpoint -> FAILED
    |
-   +--> completed --> COMPLETED + checkpoint
+   +--> completed --> Persist COMPLETED checkpoint -> COMPLETED
    |
-   +--> failed --> FAILED + checkpoint
-   |
-   +--> other status --> BLOCKED + checkpoint
+   +--> other status --> Persist BLOCKED checkpoint -> BLOCKED
 ```
+
+The durable checkpoint is the recovery boundary. Task state must not advance beyond the last successfully persisted checkpoint. If terminal checkpoint persistence fails, the task remains `running` and the durable `running` checkpoint remains authoritative for recovery. If execution is interrupted before a terminal checkpoint is committed, recovery treats the task as incomplete rather than inventing a terminal result.
 
 The execution service does not publish knowledge. It returns a typed `AgentResult`; downstream validators remain responsible for accepting or rejecting artifacts.
 
-Checkpoint persistence is storage-neutral. The foundation uses an in-memory implementation for deterministic tests. Persistent storage requires a later adapter and transaction/recovery design.
+## Checkpoint persistence and recovery
+
+Checkpoint persistence is storage-neutral. The foundation provides an in-memory implementation for deterministic tests and a transactional SQLite reference adapter for durable local persistence.
+
+Checkpoint invariants:
+
+- checkpoint IDs are immutable and unique within the persistence scope
+- identical replays are idempotent
+- conflicting reuse of an ID fails closed
+- checkpoints are append-only snapshots
+- latest state is selected by UTC creation time with a deterministic ID tie-breaker
+- each persistent save is atomic
+- missing, corrupt, or ambiguous recovery state fails closed
+- retention must never remove the checkpoint required for recovery before a replacement is durably committed
+
+The persistent adapter is a storage implementation detail. PostgreSQL or another durable backend may replace SQLite without changing the orchestration contract. See ADR-0002 for the complete transaction, recovery, retention, and versioning decision.
 
 ## Execution model
 
