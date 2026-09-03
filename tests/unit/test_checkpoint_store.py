@@ -124,7 +124,7 @@ def test_sqlite_latest_uses_creation_time_not_insert_order() -> None:
 def test_sqlite_rejects_naive_checkpoint_timestamp() -> None:
     store = SQLiteCheckpointStore(sqlite3.connect(":memory:"))
     checkpoint = Checkpoint(
-        "cp-1", "mission-test", "task-a", "running", datetime(2026, 1, 1)
+        "cp-1", "mission-test", "task-a", "running", datetime.fromisoformat("2026-01-01")
     )
     with pytest.raises(ValueError, match="timezone-aware"):
         store.save(checkpoint)
