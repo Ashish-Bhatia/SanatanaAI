@@ -14,13 +14,13 @@ class AgentRegistryError(ValueError):
 def load_registry(registry_path: Path, schema_path: Path) -> tuple[dict[str, Any], ...]:
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    if not isinstance(registry, list):
-        raise AgentRegistryError("agent registry must be a JSON array")
+    if not isinstance(registry, dict) or not isinstance(registry.get("agents"), list):
+        raise AgentRegistryError("agent registry must contain an agents array")
 
     validator = Draft202012Validator(schema)
     entries: list[dict[str, Any]] = []
     ids: set[str] = set()
-    for entry in registry:
+    for entry in registry["agents"]:
         errors = sorted(validator.iter_errors(entry), key=lambda error: list(error.path))
         if errors:
             details = "; ".join(error.message for error in errors)
