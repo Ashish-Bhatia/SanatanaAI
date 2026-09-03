@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -16,8 +17,9 @@ def test_foundation_registry_loads_and_has_unique_ids() -> None:
 
 
 def test_registry_rejects_duplicate_ids(tmp_path: Path) -> None:
-    source = REGISTRY.read_text(encoding="utf-8")
+    source = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    source["agents"].append(dict(source["agents"][0]))
     registry = tmp_path / "registry.json"
-    registry.write_text(source.replace("\n]", ",\n" + source[source.find("{"):source.find("}") + 1] + "\n]"), encoding="utf-8")
-    with pytest.raises(AgentRegistryError):
+    registry.write_text(json.dumps(source), encoding="utf-8")
+    with pytest.raises(AgentRegistryError, match="duplicate agent id"):
         load_registry(registry, SCHEMA)
