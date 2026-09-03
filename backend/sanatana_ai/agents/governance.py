@@ -81,6 +81,9 @@ class SchemaRegistry:
             paths[schema_id] = repository_root / relative_path
         return cls(paths)
 
+    def __len__(self) -> int:
+        return len(self._schemas)
+
     def validator(self, schema_id: str) -> Draft202012Validator:
         try:
             schema = self._schemas[schema_id]
@@ -125,6 +128,11 @@ class AgentGovernance:
                 f"{sorted(undeclared)}"
             )
         for artifact in request.input_artifacts:
+            if artifact.artifact_type not in contract.inputs:
+                raise AgentGovernanceError(
+                    f"agent {request.agent_id} does not declare input artifact type "
+                    f"{artifact.artifact_type}"
+                )
             self._validate_artifact(artifact)
         return contract
 
@@ -133,6 +141,11 @@ class AgentGovernance:
             raise AgentGovernanceError("agent result identity does not match contract")
         seen_ids: set[str] = set()
         for artifact in result.output_artifacts:
+            if artifact.artifact_type not in contract.outputs:
+                raise AgentGovernanceError(
+                    f"agent {contract.id} does not declare output artifact type "
+                    f"{artifact.artifact_type}"
+                )
             self._validate_artifact(artifact)
             if artifact.artifact_id in seen_ids:
                 raise AgentGovernanceError(
@@ -151,11 +164,14 @@ class AgentGovernance:
     def _validate_artifact(self, artifact: StructuredArtifact) -> None:
         if not artifact.artifact_id.strip():
             raise AgentGovernanceError("artifact_id must not be empty")
+        if not artifact.artifact_type.strip():
+            raise AgentGovernanceError("artifact_type must not be empty")
         if not _SEMVER.fullmatch(artifact.version):
             raise AgentGovernanceError(f"invalid artifact version: {artifact.version}")
         validator = self._schemas.validator(artifact.schema_id)
         document = {
             "artifact_id": artifact.artifact_id,
+            "artifact_type": artifact.artifact_type,
             "schema_id": artifact.schema_id,
             "version": artifact.version,
             "owner_agent_id": artifact.owner_agent_id,
