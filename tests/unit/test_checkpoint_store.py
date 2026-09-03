@@ -37,6 +37,16 @@ def test_checkpoint_store_keeps_latest_checkpoint_for_task() -> None:
     assert store.latest("mission-test", "task-a") == second
 
 
+def test_checkpoint_latest_uses_creation_time_not_insert_order() -> None:
+    store = InMemoryCheckpointStore()
+    base = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    older = Checkpoint("cp-old", "mission-test", "task-a", "running", base)
+    newer = Checkpoint("cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1))
+    store.save(newer)
+    store.save(older)
+    assert store.latest("mission-test", "task-a") == newer
+
+
 def test_checkpoint_rejects_conflicting_checkpoint_id() -> None:
     store = InMemoryCheckpointStore()
     store.save(new_checkpoint("cp-1", "mission-test", "task-a", "running"))
@@ -108,6 +118,17 @@ def test_sqlite_rejects_naive_checkpoint_timestamp() -> None:
     )
     with pytest.raises(ValueError, match="timezone-aware"):
         store.save(checkpoint)
+
+
+def test_sqlite_rejects_corrupt_checkpoint_row() -> None:
+    connection = sqlite3.connect(":memory:")
+    store = SQLiteCheckpointStore(connection)
+    connection.execute(
+        "INSERT INTO checkpoints VALUES (?, ?, ?, ?, ?)",
+        ("cp-corrupt", "mission-test", "task-a", "running", "not-a-timestamp"),
+    )
+    with pytest.raises(ValueError, match="created_at is corrupt"):
+        store.latest("mission-test", "task-a")
 
 
 def test_sqlite_transaction_rolls_back_injected_failure() -> None:
