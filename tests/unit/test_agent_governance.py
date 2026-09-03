@@ -77,15 +77,21 @@ def make_contract(*, provenance_required: bool = True) -> AgentContract:
     )
 
 
-def make_artifact(*, owner_agent_id: str = "research.source", value: str = "ok") -> StructuredArtifact:
+def make_artifact(
+    *,
+    artifact_type: str = "source_artifact",
+    owner_agent_id: str = "research.source",
+    value: str = "ok",
+    provenance_ids: tuple[str, ...] = ("prov-1",),
+) -> StructuredArtifact:
     return StructuredArtifact(
         artifact_id="artifact-1",
-        artifact_type="source_artifact",
+        artifact_type=artifact_type,
         schema_id=SCHEMA_ID,
         version="1.0.0",
         owner_agent_id=owner_agent_id,
         payload={"value": value},
-        provenance_ids=("prov-1",),
+        provenance_ids=provenance_ids,
     )
 
 
@@ -135,7 +141,7 @@ def test_governance_accepts_declared_permission_and_valid_input(tmp_path: Path) 
         "task-a",
         "research.source",
         requested_permissions=("source.read",),
-        input_artifacts=(make_artifact(),),
+        input_artifacts=(make_artifact(artifact_type="source_request"),),
     )
 
     assert governance.authorize_request(request).id == "research.source"
@@ -143,9 +149,7 @@ def test_governance_accepts_declared_permission_and_valid_input(tmp_path: Path) 
 
 def test_governance_rejects_undeclared_input_artifact_type(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
-    artifact = StructuredArtifact(
-        "artifact-1", "unexpected", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}, ("prov-1",)
-    )
+    artifact = make_artifact(artifact_type="unexpected")
 
     with pytest.raises(AgentGovernanceError, match="does not declare input artifact type"):
         governance.authorize_request(
@@ -173,8 +177,15 @@ def test_governance_rejects_unregistered_artifact_schema(tmp_path: Path) -> None
 
 def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
+    invalid = make_artifact(value="not-invalid")
     invalid = StructuredArtifact(
-        "artifact-1", "source_artifact", SCHEMA_ID, "1.0.0", "research.source", {"wrong": "payload"}
+        invalid.artifact_id,
+        invalid.artifact_type,
+        invalid.schema_id,
+        invalid.version,
+        invalid.owner_agent_id,
+        {"wrong": "payload"},
+        invalid.provenance_ids,
     )
     result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(invalid,))
 
@@ -186,9 +197,7 @@ def test_governed_executor_rejects_invalid_output_artifact(tmp_path: Path) -> No
 
 def test_governed_executor_rejects_undeclared_output_artifact_type(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
-    artifact = StructuredArtifact(
-        "artifact-1", "unexpected", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}, ("prov-1",)
-    )
+    artifact = make_artifact(artifact_type="unexpected")
     result = AgentResult("mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,))
 
     with pytest.raises(AgentGovernanceError, match="does not declare output artifact type"):
@@ -215,9 +224,7 @@ def test_governed_executor_rejects_output_owned_by_other_agent(tmp_path: Path) -
 
 def test_governed_executor_requires_provenance_when_contract_requires_it(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
-    artifact = StructuredArtifact(
-        "artifact-1", "source_artifact", SCHEMA_ID, "1.0.0", "research.source", {"value": "ok"}
-    )
+    artifact = make_artifact(provenance_ids=())
     result = AgentResult(
         "mission-test", "task-a", "research.source", "completed", output_artifacts=(artifact,)
     )
