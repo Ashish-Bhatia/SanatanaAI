@@ -44,8 +44,8 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 ## Validation status
 
 - CI runs 22, 23, 24, and 29 passed on earlier corrected heads.
-- The current `foundation/orchestration-core` head is `4b57f4fa7b74812b61235620b468ddb521b5d0d6` and includes the execution-boundary, dependency-cycle, cleanup, and documentation increments.
-- Fresh CI validation is required for this current head.
+- The current `foundation/orchestration-core` head includes the execution-boundary, dependency-cycle, cleanup, and documentation increments.
+- Fresh CI validation is required for the current head.
 - PR #2 remains draft until the current implementation is reviewed and its current head passes CI.
 
 ## Current work
