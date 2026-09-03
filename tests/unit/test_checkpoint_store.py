@@ -1,8 +1,7 @@
 import sqlite3
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
-
 from sanatana_ai.missions.checkpoint import (
     Checkpoint,
     InMemoryCheckpointStore,
@@ -21,7 +20,7 @@ def test_checkpoint_round_trip() -> None:
         mission_id="mission-test",
         task_id="task-a",
         state="completed",
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )
     store.save(checkpoint)
     assert store.latest("mission-test", "task-a") == checkpoint
@@ -46,7 +45,7 @@ def test_checkpoint_store_keeps_latest_checkpoint_for_task() -> None:
 
 def test_checkpoint_latest_uses_creation_time_not_insert_order() -> None:
     store = InMemoryCheckpointStore()
-    base = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    base = datetime(2026, 1, 1, tzinfo=UTC)
     older = Checkpoint("cp-old", "mission-test", "task-a", "running", base)
     newer = Checkpoint(
         "cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1)
@@ -64,7 +63,7 @@ def test_checkpoint_rejects_conflicting_checkpoint_id() -> None:
         mission_id="mission-test",
         task_id="task-a",
         state="completed",
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )
     with pytest.raises(ValueError, match="checkpoint id already exists"):
         store.save(conflicting)
@@ -112,7 +111,7 @@ def test_sqlite_checkpoint_rejects_conflicting_id() -> None:
 
 def test_sqlite_latest_uses_creation_time_not_insert_order() -> None:
     store = SQLiteCheckpointStore(sqlite3.connect(":memory:"))
-    base = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    base = datetime(2026, 1, 1, tzinfo=UTC)
     older = Checkpoint("cp-old", "mission-test", "task-a", "running", base)
     newer = Checkpoint(
         "cp-new", "mission-test", "task-a", "completed", base + timedelta(seconds=1)
