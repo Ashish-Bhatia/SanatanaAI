@@ -55,10 +55,28 @@ jobs:
             test -f "$file"
           done
           test -f governance/decisions/ADR-0001-multi-agent-provenance-first-architecture.md
+          test -f governance/decisions/ADR-0002-checkpoint-store-and-resumability.md
           test -f agents/schemas/agent-contract.schema.json
+          test -f agents/registry/foundation.agents.json
           test -f missions/schemas/mission.schema.json
           test -f missions/schemas/task.schema.json
           test -f data/schemas/provenance-record.schema.json
+
+      - name: Validate registered agent contracts
+        working-directory: backend
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from sanatana_ai.agents.registry import load_registry
+
+          entries = load_registry(
+              Path('../agents/registry/foundation.agents.json'),
+              Path('../agents/schemas/agent-contract.schema.json'),
+          )
+          if not entries:
+              raise SystemExit('agent registry must contain at least one agent')
+          print(f'Validated {len(entries)} registered agent contracts.')
+          PY
 
       - name: Run backend tests
         working-directory: backend
