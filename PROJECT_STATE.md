@@ -15,11 +15,12 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `foundation/orchestration-core`
+- Active implementation branch: `foundation/phase-0`
 - Repository visibility: private
 - Open PR #1: draft, foundation integration into `main`
-- Open PR #2: draft, orchestration-core integration into `foundation/phase-0`
+- PR #2: merged into `foundation/phase-0`
 - Conversation records exist under `governance/conversations/`
+- GitHub issues #3 through #13 track the principal Foundation and post-Foundation workstreams.
 
 ## Foundation completed
 
@@ -40,22 +41,41 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Storage-neutral execution service boundary
 - Unit tests for checkpoint, schema, registry, task lifecycle, execution, and dependency-cycle behavior
 - CI validation for JSON, foundation files, backend tests, and secret patterns
+- GitHub issue backlog for principal engineering workstreams
 
 ## Validation status
 
 - CI runs 22, 23, 24, and 29 passed on earlier corrected heads.
-- The current `foundation/orchestration-core` head includes the execution-boundary, dependency-cycle, cleanup, and documentation increments.
-- Fresh CI validation is required for the current head.
-- PR #2 remains draft until the current implementation is reviewed and its current head passes CI.
+- CI run 50 passed on the orchestration execution increment.
+- CI run 51 passed on the validated orchestration-core head before PR #2 integration.
+- PR #2 was reviewed and merged into `foundation/phase-0`.
+- PR #1 remains open and draft.
+- Fresh CI validation against the integrated Foundation head is required before PR #1 can be merged into `main`.
 
 ## Current work
 
-1. Obtain fresh CI validation for the current orchestration-core head.
-2. Review orchestration-core lifecycle, identity, failure, dependency, and checkpoint semantics.
-3. Define persistent checkpoint transaction and recovery semantics before production persistence.
-4. Strengthen formatting, typing, dependency, security, provenance, agent-contract, documentation, and regression gates.
-5. Resolve native branch/ruleset enforcement capability.
-6. Complete and review Foundation Phase 0 before integration.
+1. Obtain fresh CI validation for PR #1's integrated Foundation head.
+2. Complete final review of Foundation Phase 0 and merge only after required gates pass.
+3. Maintain GitHub issues as the operational backlog and keep issue state synchronized with repository progress.
+4. Implement persistent checkpoint transaction and recovery semantics under issue #3.
+5. Strengthen CI quality gates under issue #4.
+6. Implement agent contract, permission, and artifact governance under issue #5.
+7. Continue through provenance, orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
+
+## Issue maintenance policy
+
+- GitHub issues are the operational backlog for substantive SanatanaAI work.
+- New requirements, defects, architectural work, validation work, and follow-up work should receive explicit issue records when not already represented.
+- Meaningful issues should state objective, scope, constraints, dependencies, and acceptance criteria.
+- Update issue scope and acceptance criteria when requirements change.
+- Link implementation PRs to relevant issues.
+- Close issues only after implementation, validation, documentation, and required review gates are complete.
+- Record blockers in GitHub issue state or comments.
+- Split issues when scope becomes independently executable.
+- Avoid duplicate issues for the same requirement.
+- Conversation records remain mandatory under `governance/conversations/`.
+- Architectural decisions require ADRs.
+- Requirement changes require requirements documentation updates.
 
 ## Constraints
 
@@ -78,4 +98,4 @@ Other similarly named branches are accidental historical artifacts from earlier 
 
 ## Continuity
 
-At the beginning of each substantive session, inspect this file, `ROADMAP.md`, `ARCHITECTURE.md`, active missions, ADRs, agent contracts, current PR/CI state, and conversation records.
+At the beginning of each substantive session, inspect this file, `ROADMAP.md`, `ARCHITECTURE.md`, active missions, ADRs, agent contracts, current PR/CI state, GitHub issues, and conversation records.
