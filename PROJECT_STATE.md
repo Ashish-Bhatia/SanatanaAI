@@ -15,14 +15,14 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `feature/agent-governance` (completed and merged; next implementation branch pending)
+- Active implementation branch: `feature/execution-controls`
 - Repository visibility: private
 - PR #1: merged into `main` with merge commit `1bfa255511b1083562d1a0c4033507474c556f34`
 - PR #2: merged into `foundation/phase-0`
 - PR #14: merged into `main` with merge commit `56d975cfcdfc7425f5c0493dc39ec381702cdd31`
 - PR #15: merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`
 - Issue #3: completed and closed through PR #14
-- Issue #5: open, with core runtime governance merged; execution-control semantics remain
+- Issue #5: open, with core runtime governance merged; execution-control increment in progress
 - Conversation records exist under `governance/conversations/`
 - GitHub issues #4 through #13 remain the principal open Foundation and post-Foundation workstreams.
 
@@ -32,6 +32,7 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - ADR-0001 for multi-agent, provenance-first architecture
 - ADR-0002 for storage-neutral checkpoint persistence and resumability
 - ADR-0003 for runtime agent governance
+- ADR-0004 for cooperative execution controls
 - Agent contract schema and registry governance
 - Mission schema and provenance record schema
 - Reproducible Codespaces/devcontainer baseline
@@ -50,6 +51,7 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Deterministic checkpoint ordering, corruption, rollback, and recovery tests
 - Runtime agent registration, permission, artifact schema, declared artifact type, ownership, provenance, and duplicate-artifact enforcement primitives
 - Artifact schema registry
+- Cooperative retry, timeout, and cancellation control primitives
 - CI validation for JSON, foundation files, agent/artifact registries, backend tests, and secret patterns
 - GitHub issue backlog for principal engineering workstreams
 
@@ -69,15 +71,16 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - CI run 69 passed on the corrected agent-governance head before final governance-log synchronization.
 - CI run 70 passed on the final agent-governance head `7d3c240ae94d734cf2643c1014a4139c3bcc3332`.
 - PR #15 was reviewed and merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`.
-- Main CI validation after PR #14 passed before the project-state synchronization commit.
+- Execution-control implementation is in progress on `feature/execution-controls`.
+- Fresh CI validation of the execution-control branch is pending.
 - Issue #4 remains open because the broader quality-gate scope is not yet complete.
 
 ## Current work
 
-1. Finish Issue #5 execution-control semantics for retry, timeout, cancellation, and richer failure policy.
+1. Validate and merge the execution-control increment under issue #5.
 2. Complete CI quality gates under issue #4 in parallel with feature delivery.
-3. Validate and merge the Issue #5 execution-control increment before closing the issue.
-4. Continue through provenance, mission orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
+3. Close issue #5 only after its execution-control acceptance scope is complete and validated.
+4. Continue through mission orchestration, provenance, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
 5. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
 
 ## Issue maintenance policy
@@ -113,6 +116,7 @@ Genuine project branches:
 - `foundation/orchestration-core`
 - `feature/checkpoint-recovery`
 - `feature/agent-governance`
+- `feature/execution-controls`
 
 Other similarly named branches are accidental historical artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
 
