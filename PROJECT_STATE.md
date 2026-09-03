@@ -15,9 +15,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `foundation/phase-0`
+- Active implementation branch: `feature/checkpoint-recovery`
 - Repository visibility: private
-- Open PR #1: draft, foundation integration into `main`
+- PR #1: merged into `main` with merge commit `1bfa255511b1083562d1a0c4033507474c556f34`
 - PR #2: merged into `foundation/phase-0`
 - Conversation records exist under `governance/conversations/`
 - GitHub issues #3 through #13 track the principal Foundation and post-Foundation workstreams.
@@ -48,20 +48,20 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - CI runs 22, 23, 24, and 29 passed on earlier corrected heads.
 - CI run 50 passed on the orchestration execution increment.
 - CI run 51 passed on the validated orchestration-core head before PR #2 integration.
+- CI run 52 passed on Foundation head `14a019b538836171e31a932f23d3e68879608bd0` before PR #1 integration.
 - PR #2 was reviewed and merged into `foundation/phase-0`.
-- CI quality-gate strengthening has started in commit `e4c8bf9ea301a3123078bddf861a66c1b4e54409`.
-- The strengthened CI now validates ADR-0002 and the registered agent contracts.
-- Fresh CI validation against the current Foundation integration head is required before PR #1 can be merged into `main`.
+- PR #1 was merged into `main` after the Foundation merge conflict was reconciled.
+- Issue #3 implementation is in progress on `feature/checkpoint-recovery`.
+- Issue #4 remains open because the broader quality-gate scope is not yet complete.
 
 ## Current work
 
-1. Obtain fresh CI validation for PR #1's integrated Foundation head.
-2. Complete final review of Foundation Phase 0 and merge only after required gates pass.
-3. Maintain GitHub issues as the operational backlog and keep issue state synchronized with repository progress.
-4. Implement persistent checkpoint transaction and recovery semantics under issue #3.
-5. Complete CI quality gates under issue #4.
-6. Implement agent contract, permission, and artifact governance under issue #5.
-7. Continue through provenance, orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
+1. Complete Issue #3 persistent checkpoint transaction and recovery semantics.
+2. Validate the Issue #3 branch through CI, review, and merge gates.
+3. Complete CI quality gates under issue #4.
+4. Implement agent contract, permission, and artifact governance under issue #5.
+5. Continue through provenance, orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
+6. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
 
 ## Issue maintenance policy
 
@@ -94,6 +94,7 @@ Genuine project branches:
 - `main`
 - `foundation/phase-0`
 - `foundation/orchestration-core`
+- `feature/checkpoint-recovery`
 
 Other similarly named branches are accidental historical artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
 
