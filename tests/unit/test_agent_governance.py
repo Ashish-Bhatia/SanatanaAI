@@ -93,6 +93,20 @@ def make_governance(tmp_path: Path) -> AgentGovernance:
     )
 
 
+def test_governance_loads_repository_registry() -> None:
+    root = Path(__file__).parents[2]
+    schemas = SchemaRegistry.from_registry(
+        root / "agents/registry/artifact-schemas.json", root
+    )
+    governance = AgentGovernance.from_registry(
+        root / "agents/registry/foundation.agents.json",
+        root / "agents/schemas/agent-contract.schema.json",
+        schemas,
+    )
+
+    assert governance.contract_for("orchestration.mission").version == "1.0.0"
+
+
 def test_governance_rejects_unregistered_agent(tmp_path: Path) -> None:
     governance = make_governance(tmp_path)
     request = AgentRequest("mission-test", "task-a", "unknown.agent")
