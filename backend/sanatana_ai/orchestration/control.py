@@ -54,15 +54,11 @@ class ExecutionContext:
 
 
 class ContextualAgentExecutor(Protocol):
-    def execute_with_context(
-        self, request: AgentRequest, context: ExecutionContext
-    ) -> AgentResult:
-        ...
+    def execute_with_context(self, request: AgentRequest, context: ExecutionContext) -> AgentResult: ...
 
 
 class AgentExecutor(Protocol):
-    def execute(self, request: AgentRequest) -> AgentResult:
-        ...
+    def execute(self, request: AgentRequest) -> AgentResult: ...
 
 
 @dataclass(frozen=True)
@@ -100,9 +96,7 @@ class ControlledAgentExecutor:
 
         for attempt in range(1, self.policy.max_attempts + 1):
             deadline = (
-                time.monotonic() + self.policy.timeout_seconds
-                if self.policy.timeout_seconds is not None
-                else None
+                time.monotonic() + self.policy.timeout_seconds if self.policy.timeout_seconds is not None else None
             )
             context = ExecutionContext(attempt, deadline, self.cancellation_token)
             context.check()
