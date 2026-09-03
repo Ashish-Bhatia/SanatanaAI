@@ -50,8 +50,7 @@ class TaskState:
         self.status = status
 
 
-def resolve_task_readiness(tasks: list[TaskState]) -> None:
-    """Update task readiness from dependency state, failing closed on invalid graphs."""
+def _validate_dependency_graph(tasks: list[TaskState]) -> dict[str, TaskState]:
     by_id = {task.task_id: task for task in tasks}
     if len(by_id) != len(tasks):
         raise ValueError("duplicate task_id detected")
@@ -62,6 +61,30 @@ def resolve_task_readiness(tasks: list[TaskState]) -> None:
             raise ValueError(f"task {task.task_id} has missing dependencies: {missing}")
         if task.task_id in task.dependencies:
             raise ValueError(f"task {task.task_id} cannot depend on itself")
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(task_id: str) -> None:
+        if task_id in visiting:
+            raise ValueError(f"dependency cycle detected at task {task_id}")
+        if task_id in visited:
+            return
+        visiting.add(task_id)
+        for dependency in by_id[task_id].dependencies:
+            visit(dependency)
+        visiting.remove(task_id)
+        visited.add(task_id)
+
+    for task in tasks:
+        visit(task.task_id)
+
+    return by_id
+
+
+def resolve_task_readiness(tasks: list[TaskState]) -> None:
+    """Update task readiness from dependency state, failing closed on invalid graphs."""
+    by_id = _validate_dependency_graph(tasks)
 
     for task in tasks:
         if task.status in {TaskStatus.COMPLETED, TaskStatus.CANCELLED, TaskStatus.RUNNING}:
