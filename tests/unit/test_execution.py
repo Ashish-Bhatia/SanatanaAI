@@ -22,6 +22,16 @@ class FailingExecutor:
         raise RuntimeError("provider failure")
 
 
+class InvalidResultExecutor:
+    def execute(self, request: AgentRequest) -> AgentResult:
+        return AgentResult(
+            mission_id=request.mission_id,
+            task_id=request.task_id,
+            agent_id=request.agent_id,
+            status="not-a-task-status",
+        )
+
+
 def make_ready_task() -> TaskState:
     task = TaskState(
         task_id="task-a",
@@ -75,10 +85,18 @@ def test_execution_service_rejects_non_ready_task() -> None:
         ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
 
 
-def test_execution_service_rejects_identity_mismatch() -> None:
+def test_execution_service_rejects_request_identity_mismatch() -> None:
     store = InMemoryCheckpointStore()
     task = make_ready_task()
     request = AgentRequest("mission-test", "task-a", "other.agent")
 
     with pytest.raises(ValueError, match="does not match task agent"):
         ExecutionService(store).execute_task(task, SuccessfulExecutor(), request, "cp-1")
+
+
+def test_execution_service_rejects_invalid_result_status() -> None:
+    store = InMemoryCheckpointStore()
+    task = make_ready_task()
+
+    with pytest.raises(ValueError, match="invalid status"):
+        ExecutionService(store).execute_task(task, InvalidResultExecutor(), make_request(), "cp-1")
