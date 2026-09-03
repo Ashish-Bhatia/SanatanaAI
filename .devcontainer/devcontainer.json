@@ -1,0 +1,20 @@
+{
+  "name": "SanatanaAI",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint"
+      ]
+    }
+  },
+  "postCreateCommand": "python --version && node --version"
+}
