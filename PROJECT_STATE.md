@@ -49,8 +49,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - CI run 50 passed on the orchestration execution increment.
 - CI run 51 passed on the validated orchestration-core head before PR #2 integration.
 - PR #2 was reviewed and merged into `foundation/phase-0`.
-- PR #1 remains open and draft.
-- Fresh CI validation against the integrated Foundation head is required before PR #1 can be merged into `main`.
+- CI quality-gate strengthening has started in commit `e4c8bf9ea301a3123078bddf861a66c1b4e54409`.
+- The strengthened CI now validates ADR-0002 and the registered agent contracts.
+- Fresh CI validation against the current Foundation integration head is required before PR #1 can be merged into `main`.
 
 ## Current work
 
@@ -58,14 +59,14 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 2. Complete final review of Foundation Phase 0 and merge only after required gates pass.
 3. Maintain GitHub issues as the operational backlog and keep issue state synchronized with repository progress.
 4. Implement persistent checkpoint transaction and recovery semantics under issue #3.
-5. Strengthen CI quality gates under issue #4.
+5. Complete CI quality gates under issue #4.
 6. Implement agent contract, permission, and artifact governance under issue #5.
 7. Continue through provenance, orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
 
 ## Issue maintenance policy
 
 - GitHub issues are the operational backlog for substantive SanatanaAI work.
-- New requirements, defects, architectural work, validation work, and follow-up work should receive explicit issue records when not already represented.
+- New requirements, defects, architectural work, validation work, and follow-up work should receive explicit GitHub issue records when not already represented.
 - Meaningful issues should state objective, scope, constraints, dependencies, and acceptance criteria.
 - Update issue scope and acceptance criteria when requirements change.
 - Link implementation PRs to relevant issues.
