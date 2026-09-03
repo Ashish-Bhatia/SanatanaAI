@@ -34,7 +34,7 @@ During continuation, comparison of the active branch against `foundation/phase-0
 ## Validation
 Repository-level unit and CI validation is required on the resulting head. Prior CI runs 22, 23, 24, and 29 passed on earlier corrected heads; those results do not substitute for validation of the current head.
 
-Current implementation head after cleanup and project-state documentation: `6f3caa626000cc5b5bb488605d1320879e2022dc`.
+Current implementation head after cleanup and project-state documentation: `eff0a32e8709de7b9a131adcc354979aeb04be4d`.
 
 ## Unresolved Questions
 - Persistent checkpoint transaction and recovery semantics still require a dedicated design and implementation gate.
