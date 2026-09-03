@@ -15,16 +15,17 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `feature/execution-controls`
+- Active implementation branch: `feature/ci-quality-gates` (next branch to be created from current main)
 - Repository visibility: private
 - PR #1: merged into `main` with merge commit `1bfa255511b1083562d1a0c4033507474c556f34`
 - PR #2: merged into `foundation/phase-0`
 - PR #14: merged into `main` with merge commit `56d975cfcdfc7425f5c0493dc39ec381702cdd31`
 - PR #15: merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`
+- PR #16: merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`
 - Issue #3: completed and closed through PR #14
-- Issue #5: open, with core runtime governance merged; execution-control increment in progress
+- Issue #5: completed and closed after PR #15 and PR #16
 - Conversation records exist under `governance/conversations/`
-- GitHub issues #4 through #13 remain the principal open Foundation and post-Foundation workstreams.
+- GitHub issues #4 and #6 through #13 remain the principal open Foundation and post-Foundation workstreams.
 
 ## Foundation completed
 
@@ -71,17 +72,18 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - CI run 69 passed on the corrected agent-governance head before final governance-log synchronization.
 - CI run 70 passed on the final agent-governance head `7d3c240ae94d734cf2643c1014a4139c3bcc3332`.
 - PR #15 was reviewed and merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`.
-- Execution-control implementation is in progress on `feature/execution-controls`.
-- Fresh CI validation of the execution-control branch is pending.
+- CI run 74 passed on PR #16 head `ac36374bf4042c16fe572ad0bb3d1f9b0a10bdb0`.
+- PR #16 was reviewed and merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`.
+- CI run 75 passed on the PR #16 merge commit.
+- Issue #5 was closed as completed after implementation, CI, review, documentation, and merge gates passed.
 - Issue #4 remains open because the broader quality-gate scope is not yet complete.
 
 ## Current work
 
-1. Validate and merge the execution-control increment under issue #5.
-2. Complete CI quality gates under issue #4 in parallel with feature delivery.
-3. Close issue #5 only after its execution-control acceptance scope is complete and validated.
-4. Continue through mission orchestration, provenance, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
-5. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
+1. Strengthen CI quality gates under issue #4.
+2. Implement execution provenance and validation-outcome persistence under issue #6.
+3. Continue through mission orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #7 through #13.
+4. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
 
 ## Issue maintenance policy
 
@@ -117,6 +119,8 @@ Genuine project branches:
 - `feature/checkpoint-recovery`
 - `feature/agent-governance`
 - `feature/execution-controls`
+
+Next required branch: `feature/ci-quality-gates`.
 
 Other similarly named branches are accidental historical artifacts from earlier connector failures. The current GitHub integration does not expose branch deletion, so they are not being mutated or represented as development branches.
 
