@@ -4,7 +4,11 @@ import sqlite3
 from collections.abc import Callable
 from datetime import datetime, timezone
 
-from sanatana_ai.missions.checkpoint import Checkpoint, CheckpointStore
+from sanatana_ai.missions.checkpoint import (
+    Checkpoint,
+    CheckpointStore,
+    validate_checkpoint,
+)
 
 
 class SQLiteCheckpointStore(CheckpointStore):
@@ -48,6 +52,7 @@ class SQLiteCheckpointStore(CheckpointStore):
 
     def save(self, checkpoint: Checkpoint) -> None:
         """Atomically persist a checkpoint with idempotent replay semantics."""
+        validate_checkpoint(checkpoint)
         created_at = _utc_iso(checkpoint.created_at)
         try:
             with self._connection:
@@ -77,7 +82,7 @@ class SQLiteCheckpointStore(CheckpointStore):
             if existing is None:
                 raise
             stored = _row_to_checkpoint(existing)
-            if stored != checkpoint:
+            if _checkpoint_identity(stored) != _checkpoint_identity(checkpoint):
                 raise ValueError(
                     f"checkpoint id already exists: {checkpoint.checkpoint_id}"
                 )
@@ -107,7 +112,8 @@ def open_sqlite_checkpoint_store(
     """Open a checkpoint store using the standard-library SQLite driver."""
     connection = connection_factory(database)
     connection.execute("PRAGMA foreign_keys = ON")
-    connection.execute("PRAGMA journal_mode = WAL")
+    if database != ":memory:":
+        connection.execute("PRAGMA journal_mode = WAL")
     return SQLiteCheckpointStore(connection)
 
 
@@ -117,12 +123,27 @@ def _utc_iso(value: datetime) -> str:
     return value.astimezone(timezone.utc).isoformat(timespec="microseconds")
 
 
+def _checkpoint_identity(checkpoint: Checkpoint) -> tuple[str, str, str, str, str]:
+    return (
+        checkpoint.checkpoint_id,
+        checkpoint.mission_id,
+        checkpoint.task_id,
+        checkpoint.state,
+        _utc_iso(checkpoint.created_at),
+    )
+
+
 def _row_to_checkpoint(row: sqlite3.Row) -> Checkpoint:
-    created_at = datetime.fromisoformat(row["created_at"])
-    return Checkpoint(
+    try:
+        created_at = datetime.fromisoformat(row["created_at"])
+    except ValueError as exc:
+        raise ValueError("checkpoint created_at is corrupt") from exc
+    checkpoint = Checkpoint(
         checkpoint_id=row["checkpoint_id"],
         mission_id=row["mission_id"],
         task_id=row["task_id"],
         state=row["state"],
         created_at=created_at,
     )
+    validate_checkpoint(checkpoint)
+    return checkpoint
