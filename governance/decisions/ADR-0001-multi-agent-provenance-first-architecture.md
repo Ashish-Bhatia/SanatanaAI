@@ -60,3 +60,7 @@ The monolithic-agent approach is rejected because it conflicts with the required
 ## Follow-up
 
 Define agent contract schemas, mission/task schemas, provenance schemas, and CI validation in Foundation Phase 0.
+
+## Validation
+
+This decision is validated through the Foundation architecture, registered agent contracts, structured artifact schemas, mission/task schemas, provenance schema, runtime governance tests, checkpoint/recovery tests, and CI quality gates. Future architectural changes must preserve the multi-agent boundary, provider-neutral orchestration, and provenance-first knowledge model or supersede this ADR through a new documented decision.
