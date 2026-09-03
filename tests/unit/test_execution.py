@@ -1,7 +1,7 @@
 import pytest
 
 from sanatana_ai.contracts.agent import AgentRequest, AgentResult
-from sanatana_ai.missions.checkpoint import InMemoryCheckpointStore
+from sanatana_ai.missions.checkpoint import CheckpointStore, InMemoryCheckpointStore
 from sanatana_ai.missions.task import TaskState, TaskStatus
 from sanatana_ai.orchestration.execution import ExecutionService
 
@@ -30,6 +30,17 @@ class InvalidResultExecutor:
             agent_id=request.agent_id,
             status="not-a-task-status",
         )
+
+
+class FailingCheckpointStore(InMemoryCheckpointStore):
+    def __init__(self, failing_checkpoint_id: str) -> None:
+        super().__init__()
+        self.failing_checkpoint_id = failing_checkpoint_id
+
+    def save(self, checkpoint) -> None:
+        if checkpoint.checkpoint_id == self.failing_checkpoint_id:
+            raise RuntimeError("checkpoint persistence failure")
+        super().save(checkpoint)
 
 
 def make_ready_task() -> TaskState:
@@ -103,3 +114,13 @@ def test_execution_service_rejects_invalid_result_and_checkpoints_failure() -> N
 
     assert task.status == TaskStatus.FAILED
     assert store.latest("mission-test", "task-a").state == TaskStatus.FAILED.value
+
+
+def test_execution_service_does_not_advance_task_when_running_checkpoint_fails() -> None:
+    store: CheckpointStore = FailingCheckpointStore("cp-1")
+    task = make_ready_task()
+
+    with pytest.raises(RuntimeError, match="checkpoint persistence failure"):
+        ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+
+    assert task.status == TaskStatus.READY
