@@ -15,13 +15,14 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
 - Foundation branch: `foundation/phase-0`
-- Active implementation branch: `feature/agent-governance`
+- Active implementation branch: `feature/agent-governance` (completed and merged; next implementation branch pending)
 - Repository visibility: private
 - PR #1: merged into `main` with merge commit `1bfa255511b1083562d1a0c4033507474c556f34`
 - PR #2: merged into `foundation/phase-0`
 - PR #14: merged into `main` with merge commit `56d975cfcdfc7425f5c0493dc39ec381702cdd31`
-- PR #15: open, agent-governance implementation
+- PR #15: merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`
 - Issue #3: completed and closed through PR #14
+- Issue #5: open, with core runtime governance merged; execution-control semantics remain
 - Conversation records exist under `governance/conversations/`
 - GitHub issues #4 through #13 remain the principal open Foundation and post-Foundation workstreams.
 
@@ -65,14 +66,17 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - CI run 63 passed on main state commit `3ae48550b041c07855267ffb78195882e8e0bec1`.
 - CI run 67 failed during an intermediate artifact-schema change; the failing test fixture was corrected.
 - CI run 68 failed on an input/output artifact-type fixture mismatch; runtime governance was intentionally not weakened and the fixture was corrected in commit `5695d0316c90657fb2645094fcf059f930f041af`.
-- CI run 69 is validating the corrected agent-governance branch head.
+- CI run 69 passed on the corrected agent-governance head before final governance-log synchronization.
+- CI run 70 passed on the final agent-governance head `7d3c240ae94d734cf2643c1014a4139c3bcc3332`.
+- PR #15 was reviewed and merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`.
+- Main CI validation after PR #14 passed before the project-state synchronization commit.
 - Issue #4 remains open because the broader quality-gate scope is not yet complete.
 
 ## Current work
 
-1. Complete and validate the agent-governance implementation under issue #5.
+1. Finish Issue #5 execution-control semantics for retry, timeout, cancellation, and richer failure policy.
 2. Complete CI quality gates under issue #4 in parallel with feature delivery.
-3. Extend governance with execution-control semantics for retry, timeout, and cancellation.
+3. Validate and merge the Issue #5 execution-control increment before closing the issue.
 4. Continue through provenance, mission orchestration, knowledge, research, validation, editorial, application, and autonomous-engineering workstreams tracked by issues #6 through #13.
 5. Keep GitHub issues, project state, ADRs, architecture, and conversation records synchronized with implementation progress.
 
