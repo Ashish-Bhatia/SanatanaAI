@@ -23,12 +23,18 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - Added versioned acquisition JSON Schema.
 - Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
 - Updated architecture and project state to record the new boundary.
+- Corrected CI workflow targeting so dependent pull requests into `feature/provenance-evidence-pipeline` receive the mandatory validation workflow.
+- Synchronized the branch project state with PR #21 CI run #192 and current PR #22 head.
 
 ## Validation
-A fresh CI run is required for the new branch before merge. No local test result is asserted here because execution has not been performed in this session.
+PR #21 CI run #192 is in progress for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
+
+PR #22 head is `6d147a3091fe0df1bed910f60beb9280e91a293b`. No completed CI result is currently recorded for this head.
+
+No local test result is asserted here because execution has not been performed in this session.
 
 ## Review and gate
 The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review.
 
 ## Result
-The next Issue #6 increment is implemented on a dedicated branch without changing `main`. Source identity and acquisition history are now represented as separate governed artifacts.
+The next Issue #6 increment remains implemented on a dedicated branch without changing `main`. CI targeting for the dependent provenance branch has been corrected without weakening any validation gate.
