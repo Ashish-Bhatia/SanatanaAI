@@ -4,9 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-SOURCE_TYPES = frozenset(
-    {"text", "manuscript", "edition", "translation", "commentary", "secondary_source"}
-)
+SOURCE_TYPES = frozenset({"text", "manuscript", "edition", "translation", "commentary", "secondary_source"})
 SCHEMA_VERSION = "1.0"
 
 
