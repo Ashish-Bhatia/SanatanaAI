@@ -2,7 +2,7 @@
 
 ## Status
 
-Phase: Foundation / Phase 0
+Phase: Evidence and Provenance / Phase 3
 State: In progress
 Last updated: 2026-09-04
 
@@ -14,11 +14,12 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
-- Foundation branch: `foundation/phase-0`
-- Active implementation branch: `feature/ci-quality-gates`
-- PR #1, #14, #15, and #16 are merged into `main`.
-- PR #17 is the single active pull request and is the current CI gate.
-- Issues #3 and #5 are completed. Issue #4 remains open until PR #17 passes and merges. Issues #6 through #13 are the next product workstreams.
+- Active implementation branch: `feature/provenance-evidence-pipeline`
+- PR #17 is merged into `main`.
+- Recovery PR #20 is merged into `main` at `bd4c2386b225ee0439ce22b1766fe4da355a14ab`.
+- Issue #4 is complete.
+- Issue #6 is the active product workstream.
+- Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
 
@@ -38,69 +39,56 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Checkpoint ordering, corruption, rollback, and recovery tests
 - Runtime agent permission, artifact type, ownership, provenance, and duplicate-artifact controls
 - Cooperative retry, timeout, and cancellation controls
+- Foundation CI quality gates including formatting, linting, mypy, dependency audit, package build, ADR validation, tests, and secret scanning
 
-## Current CI gate
+## Current workstream
 
-PR #17, `ci: strengthen Foundation quality gates`, adds formatting, linting, mypy, dependency auditing, package build, ADR structure validation, existing schema/registry/tests, and secret scanning.
+Issue #6, `Provenance: implement source-to-claim evidence pipeline`.
 
-The latest observed CI run #145 tested PR merge ref `b815eda2a485522cb35ea779019736ea98504243` for head `0c5f9220dc5db3258eaf7d99255ee04f7a00a92c`.
+Requirement scope:
+- source registry and stable source identity
+- acquisition and retrieval metadata
+- text/manuscript representations
+- addressable passages
+- atomic claims
+- claim-to-passage evidence references
+- processing/provenance history
+- original-language, transliteration, and translation separation
+- explicit evidence classes
+- reproducible processing records
 
-Observed results:
-- JSON validation: passed
-- dependency installation: passed
-- required project files: passed
-- agent/artifact registry validation: passed
-- ADR structure validation: passed
-- Ruff formatting: passed
-- Ruff linting: passed
-- mypy: passed
-- backend tests: failed, 2 failed and 55 passed
-- dependency audit, package build, and secret scan were skipped because CI fails closed
+Current implementation increment:
+- Versioned `1.0` JSON Schemas for source, passage, claim, evidence reference, processing record, and provenance record.
+- Strict provenance validation with schema-version enforcement and fail-closed type/invariant checks.
+- Cross-artifact validation enforcing source, passage, claim, evidence-reference, and provenance identity links.
+- Fail-closed protection against classifying a translation source as primary textual evidence.
+- Representative source, passage, claim, evidence-reference, and provenance fixtures.
+- Automated fixture schema validation and end-to-end source-to-claim chain validation.
+- Unit coverage for malformed provenance and broken cross-artifact links.
+- Architecture and requirement documentation updated on the feature branch.
 
-Root cause of the two failing tests: `ExecutionPolicy` did not expose the `cancellation_enabled` field expected by the existing cancellation contract tests.
+## Validation status
 
-Corrective commit on `feature/ci-quality-gates`:
-- `1e015f189ce99402e6a406e7c7a51d513ef8a3bb`, `fix: enforce cancellation policy in execution control`
+PR #21 is open against `main`. GitHub reports the feature branch head as `e37631a7981da74274e5627417138c43a1c60a22`.
 
-The correction adds explicit cancellation policy state, makes cancellation require contextual execution, and creates an execution token when cancellation is enabled without an injected token.
+CI run #189 completed successfully for the current PR head.
 
-Fresh CI for the corrected head is required. Do not bypass the failing test gate.
+PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
-## Current work
+## Delivery rules
 
-1. Validate the cancellation fix through fresh PR #17 CI.
-2. If green, complete review and merge PR #17, then close Issue #4.
-3. Immediately proceed with Issue #6, execution provenance and validation-outcome persistence.
-4. Continue through mission orchestration, knowledge, research, validation, editorial, applications, and autonomous engineering.
+- No substantive changes directly on `main`.
+- Use dedicated feature branches for product work.
+- CI is a mandatory quality gate.
+- Fix failures at source. Never weaken gates.
+- Never commit secrets.
+- Do not introduce paid infrastructure without approval.
 
 ## Issue maintenance policy
 
 GitHub Issues are the operational backlog. Maintain existing issues rather than creating duplicates. Update scope, acceptance criteria, blockers, implementation links, and completion state as work progresses. Close only after implementation, validation, documentation, review, and merge gates pass.
 
 Substantive conversations and decisions are recorded under `governance/conversations/`. Architectural decisions require ADRs. Requirement changes require requirements documentation updates.
-
-## Constraints
-
-- No substantive changes directly on `main`.
-- No unnecessary branches.
-- No paid infrastructure without approval.
-- Prefer free/open-source tooling.
-- Never bypass CI gates.
-- Never commit secrets.
-
-## Branch state
-
-Genuine project branches currently used by the project:
-
-- `main`
-- `foundation/phase-0`
-- `foundation/orchestration-core`
-- `feature/checkpoint-recovery`
-- `feature/agent-governance`
-- `feature/execution-controls`
-- `feature/ci-quality-gates`
-
-Other similarly named branches are historical artifacts from earlier connector failures. Branch deletion is not exposed through the current integration, so they are not being mutated.
 
 ## Continuity
 

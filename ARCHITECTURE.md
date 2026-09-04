@@ -105,6 +105,25 @@ Checkpoint invariants:
 
 The persistent adapter is a storage implementation detail. PostgreSQL or another durable backend may replace SQLite without changing the orchestration contract. See ADR-0002 for the complete transaction, recovery, retention, and versioning decision.
 
+## Evidence and provenance pipeline
+
+The evidence model is versioned independently from runtime implementation. Version `1.0` currently defines source, passage, claim, evidence-reference, processing-record, and provenance-record contracts under `schemas/`.
+
+The intended chain is:
+
+```text
+Source
+  -> Text / Manuscript
+  -> Passage
+  -> Claim
+  -> Evidence Reference
+  -> Provenance / Processing History
+```
+
+Evidence contracts require stable identifiers and explicit metadata. Claims carry an evidence class and provenance identifier. Evidence references connect a claim to an addressable passage. Processing records preserve the operation, responsible agent, inputs, outputs, and timestamp needed to reproduce transformations. Provenance validation fails closed when identity, source linkage, evidence classification, processing history, or schema version is invalid.
+
+Original-language text, transliteration, and translation remain separate representations. Competing translations and interpretations are retained as distinct evidence artifacts. AI synthesis remains explicitly classified as synthesis and never becomes primary textual evidence.
+
 ## Execution model
 
 Real-time and batch execution use the same orchestration primitives.

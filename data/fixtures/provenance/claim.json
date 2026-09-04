@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "id": "claim-fixture-1",
+  "statement": "This synthetic claim is supported by the representative passage fixture.",
+  "evidence_class": "primary_textual_evidence",
+  "provenance_id": "provenance-fixture-1"
+}
