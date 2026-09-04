@@ -10,10 +10,10 @@ Continue Issue #6 from the authoritative GitHub state after PR #22 reached a ver
 - PR #21 remains open against `main` and still requires independent review approval.
 - PR #22 remains open against `feature/provenance-evidence-pipeline`.
 - PR #22 current head is `69a1cf09c23771a7e8da569963534b8cbb2f69a9`.
-- CI run #220 completed successfully for the prior PR #22 head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
+- CI run #220 completed successfully for prior head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 - PR #23 remains open against `feature/provenance-source-registry`.
-- PR #23 current head is `a12d443c7748de0e41f3da64109e48b29b31a517`.
-- PR #23 CI run #223 attempt 2 is queued for the current head.
+- PR #23 current head is `edb149863c4392b97ef171c939a97b3f73d7c85a`.
+- PR #23 CI run #223 attempt 3 is queued for the current head.
 - Issue #6 remains the highest-priority incomplete product workstream.
 
 ## Analysis and decision
@@ -39,17 +39,17 @@ Implemented:
 
 ## Pull request
 Opened PR #23 from `feature/provenance-text-passages` to `feature/provenance-source-registry`.
-Current PR #23 head after remediation and governance synchronization is `a12d443c7748de0e41f3da64109e48b29b31a517`.
+Current PR #23 head after remediation and governance synchronization is `edb149863c4392b97ef171c939a97b3f73d7c85a`.
 
 ## Validation
-PR #23 CI run #221 failed at the formatting gate for earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
-PR #23 CI run #223 attempt 1 failed at the formatting gate because `tests/unit/test_text_representation.py` required Ruff formatting.
+PR #23 CI run #221 failed at formatting on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+PR #23 CI run #223 attempt 1 failed at formatting because `tests/unit/test_text_representation.py` required Ruff formatting.
 The verified formatting defect was corrected in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
-The current PR #23 head includes subsequent fixture, schema, and governance synchronization changes.
-PR #23 CI run #223 attempt 2 is queued against the current head. No CI success is claimed.
+Subsequent fixture, schema, and governance synchronization changes are on the current branch.
+PR #23 CI run #223 attempt 3 is queued against the current head. No CI success is claimed.
 
 ## Gate
 PR #21 and PR #22 remain independently review-gated. PR #23 must pass its applicable CI and independent review before integration.
 
 ## Next action
-Inspect CI run #223 attempt 2 to completion. Fix any verified failure at source. Do not merge around CI or independent-review requirements. Continue the remaining Issue #6 provenance processing-record work only after the representation/passage increment clears its required gates.
+Inspect CI run #223 attempt 3 to completion. Fix any verified failure at source. Do not merge around CI or independent-review requirements. Continue the remaining Issue #6 provenance processing-record work only after the representation/passage increment clears its required gates.
