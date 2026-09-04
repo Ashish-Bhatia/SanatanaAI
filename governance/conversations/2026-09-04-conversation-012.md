@@ -26,17 +26,16 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - Corrected CI workflow targeting so dependent pull requests into `feature/provenance-evidence-pipeline` receive the mandatory validation workflow.
 - CI run #199 failed at linting. Ruff identified two violations in `tests/unit/test_source_registry.py`: import ordering (`I001`) and a naive datetime fixture (`DTZ001`).
 - CI run #204 reproduced the lint failure on the then-current branch merge ref. The source was corrected without changing CI rules.
-- The corrected test preserves timezone-aware UTC fixtures for valid acquisition records and constructs the intentionally naive rejection fixture without triggering DTZ001.
-- Correction commits: `96ade05b142e43c815b593cc40906bc44eadd45f` and `4df4c43966546a1103913020dbd8a8c943fe4548`.
-- Project state and this conversation record were synchronized to the corrected head.
+- CI run #209 reproduced the import-ordering violation on the PR #22 merge ref. The import block was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`.
+- Project state was synchronized after the latest remediation.
 
 ## Validation
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 CI run #204 failed at linting on merge ref `068e72030a80103a70e2e2c6576f7cc63655ccf2`. The verified failures were `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
+PR #22 CI run #209 failed at linting on merge ref `91360c2f11e8725b498f5948f4e2f2ae5ecf57e6`. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
 
-Fresh CI is required for the current branch head after the latest governance synchronization. No result is asserted until GitHub exposes a workflow run for the current head.
+The import-ordering failure was corrected at source in commit `7e3a6f9568409b223318a932452692ccaada610f`. Fresh CI is required for the corrected head and no result is asserted until GitHub exposes it.
 
 No local test result is asserted here because execution has not been performed in this session.
 
@@ -44,4 +43,4 @@ No local test result is asserted here because execution has not been performed i
 The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review. PR #22 requires its own successful CI and independent review before integration.
 
 ## Result
-The verified CI lint blocker was fixed at source without weakening the CI gate. Governance records now reflect the corrected branch state. Fresh validation remains required. The branch remains dedicated to Issue #6 and does not modify `main` directly.
+The verified CI lint blocker was fixed at source without weakening the CI gate. Governance records now reflect the latest corrected branch state. Fresh validation remains required. The branch remains dedicated to Issue #6 and does not modify `main` directly.
