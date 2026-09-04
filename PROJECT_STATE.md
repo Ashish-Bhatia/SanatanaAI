@@ -69,11 +69,11 @@ Current implementation increment:
 
 ## Validation status
 
-PR #21 is open against `main`. Latest head: `832b2a8d6c53eee89edbd5002e057d9e0dac11d6`.
+PR #21 is open against `main`. Latest head: `7ea737163911a3ebf1cde616a6a4860dbfdd499b`.
 
-CI run #184 completed successfully for this head. The full workflow is green for the current commit.
+CI run #186 completed successfully for this head. The full workflow is green for the current commit.
 
-PR #21 has one implementation review recorded by `Ashish-Bhatia`. No independent review submission is currently recorded.
+PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
 ## Delivery rules
 
