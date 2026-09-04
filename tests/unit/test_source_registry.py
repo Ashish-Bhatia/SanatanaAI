@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 import pytest
 
@@ -20,7 +20,7 @@ def acquisition(
     return AcquisitionRecord(
         id=acquisition_id,
         source_id=source_id,
-        retrieved_at=datetime(2026, 9, 4, tzinfo=timezone.utc),
+        retrieved_at=datetime(2026, 9, 4),
         retrieval_method="fixture",
         locator="fixtures/source-1.txt",
         content_digest="sha256:example",
