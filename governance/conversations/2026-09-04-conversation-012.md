@@ -18,7 +18,7 @@ Continue Issue #6 after the provenance contract increment, implementing stable s
 PR #21 established versioned source, passage, claim, evidence-reference, processing-record, and provenance contracts and passed CI run #192 on its validated head. The next incomplete Issue #6 scope item is source registry and acquisition/retrieval metadata.
 
 ## Implementation
-- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
+- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c2a1a544071c216ef95453`.
 - Added `SourceRecord`, `AcquisitionRecord`, and storage-neutral `SourceRegistry`.
 - Added versioned acquisition JSON Schema.
 - Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
@@ -27,6 +27,7 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - CI run #199 failed at linting. Ruff identified two violations in `tests/unit/test_source_registry.py`: import ordering (`I001`) and a naive datetime fixture (`DTZ001`).
 - CI run #204 reproduced the lint failure on the then-current branch merge ref. The source was corrected without changing CI rules.
 - CI run #209 reproduced the import-ordering violation on the PR #22 merge ref. The import block was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`.
+- CI run #212 reproduced the same import-ordering violation on the PR #22 merge ref. The import block was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`.
 - Project state was synchronized after the latest remediation.
 
 ## Validation
@@ -35,7 +36,9 @@ PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
 PR #22 CI run #209 failed at linting on merge ref `91360c2f11e8725b498f5948f4e2f2ae5ecf57e6`. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
 
-The import-ordering failure was corrected at source in commit `7e3a6f9568409b223318a932452692ccaada610f`. Fresh CI is required for the corrected head and no result is asserted until GitHub exposes it.
+PR #22 CI run #212 failed at linting on merge ref `14e2026914e51b3a69d6ba019c7cb1b8127d6134`. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
+
+The import-ordering failure was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`. Fresh CI is required for the corrected head and no result is asserted until GitHub exposes it.
 
 No local test result is asserted here because execution has not been performed in this session.
 
