@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sanatana.ai/schemas/claim_record.schema.json",
+  "title": "Claim Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "statement", "evidence_class", "provenance_id"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "minLength": 1},
+    "statement": {"type": "string", "minLength": 1},
+    "evidence_class": {"type": "string", "enum": ["primary_textual_evidence", "traditional_interpretation", "scholarly_interpretation", "historical_inference", "ai_synthesis", "uncertainty"]},
+    "provenance_id": {"type": "string", "minLength": 1}
+  }
+}
