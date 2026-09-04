@@ -54,15 +54,11 @@ class ExecutionContext:
 
 
 class ContextualAgentExecutor(Protocol):
-    def execute_with_context(
-        self, request: AgentRequest, context: ExecutionContext
-    ) -> AgentResult:
-        ...
+    def execute_with_context(self, request: AgentRequest, context: ExecutionContext) -> AgentResult: ...
 
 
 class AgentExecutor(Protocol):
-    def execute(self, request: AgentRequest) -> AgentResult:
-        ...
+    def execute(self, request: AgentRequest) -> AgentResult: ...
 
 
 @dataclass(frozen=True)
@@ -71,6 +67,7 @@ class ExecutionPolicy:
 
     max_attempts: int = 1
     timeout_seconds: float | None = None
+    cancellation_enabled: bool = False
 
     def __post_init__(self) -> None:
         if self.max_attempts < 1:
@@ -80,7 +77,7 @@ class ExecutionPolicy:
 
     @property
     def requires_context(self) -> bool:
-        return self.timeout_seconds is not None
+        return self.timeout_seconds is not None or self.cancellation_enabled
 
 
 @dataclass
@@ -98,13 +95,15 @@ class ControlledAgentExecutor:
                 "timeout or cancellation policy requires an executor implementing execute_with_context"
             )
 
+        token = self.cancellation_token
+        if self.policy.cancellation_enabled and token is None:
+            token = CancellationToken()
+
         for attempt in range(1, self.policy.max_attempts + 1):
             deadline = (
-                time.monotonic() + self.policy.timeout_seconds
-                if self.policy.timeout_seconds is not None
-                else None
+                time.monotonic() + self.policy.timeout_seconds if self.policy.timeout_seconds is not None else None
             )
-            context = ExecutionContext(attempt, deadline, self.cancellation_token)
+            context = ExecutionContext(attempt, deadline, token)
             context.check()
             try:
                 if contextual is not None:

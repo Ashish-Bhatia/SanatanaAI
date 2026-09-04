@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from collections.abc import Callable
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sanatana_ai.missions.checkpoint import (
     Checkpoint,
@@ -83,9 +83,7 @@ class SQLiteCheckpointStore(CheckpointStore):
                 raise
             stored = _row_to_checkpoint(existing)
             if _checkpoint_identity(stored) != _checkpoint_identity(checkpoint):
-                raise ValueError(
-                    f"checkpoint id already exists: {checkpoint.checkpoint_id}"
-                )
+                raise ValueError(f"checkpoint id already exists: {checkpoint.checkpoint_id}")
 
     def latest(self, mission_id: str, task_id: str) -> Checkpoint | None:
         row = self._connection.execute(
@@ -120,7 +118,7 @@ def open_sqlite_checkpoint_store(
 def _utc_iso(value: datetime) -> str:
     if value.tzinfo is None or value.utcoffset() is None:
         raise ValueError("checkpoint created_at must be timezone-aware")
-    return value.astimezone(timezone.utc).isoformat(timespec="microseconds")
+    return value.astimezone(UTC).isoformat(timespec="microseconds")
 
 
 def _checkpoint_identity(checkpoint: Checkpoint) -> tuple[str, str, str, str, str]:

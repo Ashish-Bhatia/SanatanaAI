@@ -31,3 +31,12 @@ Issue #5 is complete. The next major engineering workstream is issue #4 CI quali
 - Hard worker isolation remains a future decision only if production requirements demand hard timeout/cancellation guarantees.
 - Execution provenance and validation outcome persistence remain in issue #6.
 - Issue #4 remains open for broader quality-gate enforcement.
+
+## CI remediation update
+
+- CI run #123 failed at Ruff linting with two I001 import-order violations in `tests/unit/test_execution_control.py` and `tests/unit/test_schema_validation.py`.
+- CI run #125 reproduced the same two I001 violations against PR #17 merge ref `a158647169019419911d68ae48b05c4e839949ec`.
+- The imports were corrected on `feature/ci-quality-gates` in commits `c27e79f2542d8402bde4fa031033fa0e0e7843e3` and `88c10660aa366ba81749c1d032088f3b07eab3d1`.
+- Project state synchronization was committed as `2a91d01093be6aaace583ff72318e51e58294f92`.
+- No CI gate was weakened. No substantive change was made directly to `main`.
+- Fresh CI for the corrected head remains unverified at the time of this record.

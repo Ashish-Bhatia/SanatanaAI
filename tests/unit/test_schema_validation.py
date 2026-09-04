@@ -2,9 +2,10 @@ import json
 from pathlib import Path
 
 import pytest
-
-from sanatana_ai.validation.schema import SchemaValidationError, validate_json_document
-
+from sanatana_ai.validation.schema import (
+    SchemaValidationError,
+    validate_json_document,
+)
 
 ROOT = Path(__file__).parents[2]
 

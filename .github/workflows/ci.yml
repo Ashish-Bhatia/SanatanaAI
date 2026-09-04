@@ -44,8 +44,8 @@ jobs:
           print('All JSON documents are syntactically valid.')
           PY
 
-      - name: Install backend test dependencies
-        run: python -m pip install --disable-pip-version-check "pytest>=8.3" "jsonschema>=4.23"
+      - name: Install backend test and quality dependencies
+        run: python -m pip install --disable-pip-version-check "pytest>=8.3" "jsonschema>=4.23" "types-jsonschema>=4.24" "ruff>=0.12" "mypy>=1.17" "pip-audit>=2.9" "build>=1.2"
 
       - name: Validate required project files
         shell: bash
@@ -89,9 +89,38 @@ jobs:
           print(f'Validated {len(entries)} registered agent contracts and artifact schemas.')
           PY
 
+      - name: Validate documentation structure
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          required_sections = ('## Context', '## Problem', '## Options', '## Decision', '## Consequences', '## Validation')
+          for path in sorted(Path('governance/decisions').glob('ADR-*.md')):
+              text = path.read_text(encoding='utf-8')
+              missing = [section for section in required_sections if section not in text]
+              if missing:
+                  raise SystemExit(f'{path} missing ADR sections: {missing}')
+          PY
+
+      - name: Check formatting
+        run: ruff format --check backend tests
+
+      - name: Run lint checks
+        run: ruff check backend tests
+
+      - name: Run type checks
+        run: mypy backend/sanatana_ai
+
       - name: Run backend tests
         working-directory: backend
         run: pytest -q
+
+      - name: Audit Python dependencies
+        run: pip-audit --strict --progress-spinner off
+
+      - name: Build backend package
+        run: python -m build backend
 
       - name: Secret pattern scan
         shell: bash

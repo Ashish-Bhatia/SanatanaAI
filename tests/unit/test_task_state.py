@@ -1,5 +1,4 @@
 import pytest
-
 from sanatana_ai.missions.task import (
     InvalidTaskTransition,
     TaskState,

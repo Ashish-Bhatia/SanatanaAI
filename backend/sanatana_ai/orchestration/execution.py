@@ -11,8 +11,7 @@ from sanatana_ai.missions.task import TaskState, TaskStatus
 class AgentExecutor(Protocol):
     """Execution boundary for a specialized agent implementation."""
 
-    def execute(self, request: AgentRequest) -> AgentResult:
-        ...
+    def execute(self, request: AgentRequest) -> AgentResult: ...
 
 
 @dataclass
@@ -34,9 +33,7 @@ class ExecutionService:
 
         # Durable checkpoint first. Task state must never advance beyond the last
         # successfully persisted checkpoint.
-        running_checkpoint = new_checkpoint(
-            checkpoint_id, task.mission_id, task.task_id, TaskStatus.RUNNING.value
-        )
+        running_checkpoint = new_checkpoint(checkpoint_id, task.mission_id, task.task_id, TaskStatus.RUNNING.value)
         self.checkpoint_store.save(running_checkpoint)
         task.transition_to(TaskStatus.RUNNING)
 

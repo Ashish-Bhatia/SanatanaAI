@@ -20,8 +20,7 @@ class AgentGovernanceError(ValueError):
 
 
 class GovernedExecutor(Protocol):
-    def execute(self, request: AgentRequest) -> AgentResult:
-        ...
+    def execute(self, request: AgentRequest) -> AgentResult: ...
 
 
 @dataclass(frozen=True)
@@ -37,7 +36,7 @@ class AgentContract:
     provenance_required: bool
 
     @classmethod
-    def from_entry(cls, entry: dict[str, Any]) -> "AgentContract":
+    def from_entry(cls, entry: dict[str, Any]) -> AgentContract:
         version = entry["version"]
         if not _SEMVER.fullmatch(version):
             raise AgentGovernanceError(f"invalid agent contract version: {version}")
@@ -63,13 +62,11 @@ class SchemaRegistry:
             schema = json.loads(path.read_text(encoding="utf-8"))
             Draft202012Validator.check_schema(schema)
             if schema.get("$id") != schema_id:
-                raise AgentGovernanceError(
-                    f"schema registry id does not match schema $id: {schema_id}"
-                )
+                raise AgentGovernanceError(f"schema registry id does not match schema $id: {schema_id}")
             self._schemas[schema_id] = schema
 
     @classmethod
-    def from_registry(cls, registry_path: Path, repository_root: Path) -> "SchemaRegistry":
+    def from_registry(cls, registry_path: Path, repository_root: Path) -> SchemaRegistry:
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         entries = registry.get("schemas")
         if not isinstance(entries, dict) or not entries:
@@ -105,7 +102,7 @@ class AgentGovernance:
         registry_path: Path,
         contract_schema_path: Path,
         schemas: SchemaRegistry,
-    ) -> "AgentGovernance":
+    ) -> AgentGovernance:
         try:
             entries = load_registry(registry_path, contract_schema_path)
         except AgentRegistryError as exc:
@@ -124,14 +121,12 @@ class AgentGovernance:
         undeclared = set(request.requested_permissions) - contract.permissions
         if undeclared:
             raise AgentGovernanceError(
-                f"agent {request.agent_id} requested undeclared permissions: "
-                f"{sorted(undeclared)}"
+                f"agent {request.agent_id} requested undeclared permissions: {sorted(undeclared)}"
             )
         for artifact in request.input_artifacts:
             if artifact.artifact_type not in contract.inputs:
                 raise AgentGovernanceError(
-                    f"agent {request.agent_id} does not declare input artifact type "
-                    f"{artifact.artifact_type}"
+                    f"agent {request.agent_id} does not declare input artifact type {artifact.artifact_type}"
                 )
             self._validate_artifact(artifact)
         return contract
@@ -143,23 +138,16 @@ class AgentGovernance:
         for artifact in result.output_artifacts:
             if artifact.artifact_type not in contract.outputs:
                 raise AgentGovernanceError(
-                    f"agent {contract.id} does not declare output artifact type "
-                    f"{artifact.artifact_type}"
+                    f"agent {contract.id} does not declare output artifact type {artifact.artifact_type}"
                 )
             self._validate_artifact(artifact)
             if artifact.artifact_id in seen_ids:
-                raise AgentGovernanceError(
-                    f"duplicate output artifact id: {artifact.artifact_id}"
-                )
+                raise AgentGovernanceError(f"duplicate output artifact id: {artifact.artifact_id}")
             seen_ids.add(artifact.artifact_id)
             if artifact.owner_agent_id != contract.id:
-                raise AgentGovernanceError(
-                    f"agent {contract.id} does not own output artifact {artifact.artifact_id}"
-                )
+                raise AgentGovernanceError(f"agent {contract.id} does not own output artifact {artifact.artifact_id}")
             if contract.provenance_required and not artifact.provenance_ids:
-                raise AgentGovernanceError(
-                    f"agent {contract.id} requires provenance for output artifacts"
-                )
+                raise AgentGovernanceError(f"agent {contract.id} requires provenance for output artifacts")
 
     def _validate_artifact(self, artifact: StructuredArtifact) -> None:
         if not artifact.artifact_id.strip():
@@ -181,9 +169,7 @@ class AgentGovernance:
         errors = sorted(validator.iter_errors(document), key=lambda error: list(error.path))
         if errors:
             details = "; ".join(error.message for error in errors)
-            raise AgentGovernanceError(
-                f"artifact {artifact.artifact_id} failed schema validation: {details}"
-            )
+            raise AgentGovernanceError(f"artifact {artifact.artifact_id} failed schema validation: {details}")
 
 
 @dataclass(frozen=True)

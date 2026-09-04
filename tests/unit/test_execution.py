@@ -1,5 +1,4 @@
 import pytest
-
 from sanatana_ai.contracts.agent import AgentRequest, AgentResult
 from sanatana_ai.missions.checkpoint import CheckpointStore, InMemoryCheckpointStore
 from sanatana_ai.missions.task import TaskState, TaskStatus
@@ -65,7 +64,9 @@ def make_request() -> AgentRequest:
 def test_execution_service_checkpoints_running_and_completed_states() -> None:
     store = InMemoryCheckpointStore()
     task = make_ready_task()
-    result = ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+    result = ExecutionService(store).execute_task(
+        task, SuccessfulExecutor(), make_request(), "cp-1"
+    )
 
     assert result.status == TaskStatus.COMPLETED.value
     assert task.status == TaskStatus.COMPLETED
@@ -77,7 +78,9 @@ def test_execution_service_records_failure_checkpoint() -> None:
     task = make_ready_task()
 
     with pytest.raises(RuntimeError, match="agent execution failed"):
-        ExecutionService(store).execute_task(task, FailingExecutor(), make_request(), "cp-1")
+        ExecutionService(store).execute_task(
+            task, FailingExecutor(), make_request(), "cp-1"
+        )
 
     assert task.status == TaskStatus.FAILED
     assert store.latest("mission-test", "task-a").state == TaskStatus.FAILED.value
@@ -93,7 +96,9 @@ def test_execution_service_rejects_non_ready_task() -> None:
     )
 
     with pytest.raises(ValueError, match="is not ready"):
-        ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+        ExecutionService(store).execute_task(
+            task, SuccessfulExecutor(), make_request(), "cp-1"
+        )
 
 
 def test_execution_service_rejects_request_identity_mismatch() -> None:
@@ -102,7 +107,9 @@ def test_execution_service_rejects_request_identity_mismatch() -> None:
     request = AgentRequest("mission-test", "task-a", "other.agent")
 
     with pytest.raises(ValueError, match="does not match task agent"):
-        ExecutionService(store).execute_task(task, SuccessfulExecutor(), request, "cp-1")
+        ExecutionService(store).execute_task(
+            task, SuccessfulExecutor(), request, "cp-1"
+        )
 
 
 def test_execution_service_rejects_invalid_result_and_checkpoints_failure() -> None:
@@ -110,18 +117,24 @@ def test_execution_service_rejects_invalid_result_and_checkpoints_failure() -> N
     task = make_ready_task()
 
     with pytest.raises(ValueError, match="invalid status"):
-        ExecutionService(store).execute_task(task, InvalidResultExecutor(), make_request(), "cp-1")
+        ExecutionService(store).execute_task(
+            task, InvalidResultExecutor(), make_request(), "cp-1"
+        )
 
     assert task.status == TaskStatus.FAILED
     assert store.latest("mission-test", "task-a").state == TaskStatus.FAILED.value
 
 
-def test_execution_service_does_not_advance_task_when_running_checkpoint_fails() -> None:
+def test_execution_service_does_not_advance_task_when_running_checkpoint_fails() -> (
+    None
+):
     store: CheckpointStore = FailingCheckpointStore("cp-1")
     task = make_ready_task()
 
     with pytest.raises(RuntimeError, match="checkpoint persistence failure"):
-        ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+        ExecutionService(store).execute_task(
+            task, SuccessfulExecutor(), make_request(), "cp-1"
+        )
 
     assert task.status == TaskStatus.READY
 
@@ -131,7 +144,9 @@ def test_execution_service_keeps_task_running_when_terminal_checkpoint_fails() -
     task = make_ready_task()
 
     with pytest.raises(RuntimeError, match="checkpoint persistence failure"):
-        ExecutionService(store).execute_task(task, SuccessfulExecutor(), make_request(), "cp-1")
+        ExecutionService(store).execute_task(
+            task, SuccessfulExecutor(), make_request(), "cp-1"
+        )
 
     assert task.status == TaskStatus.RUNNING
     assert store.latest("mission-test", "task-a").state == TaskStatus.RUNNING.value

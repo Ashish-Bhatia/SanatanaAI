@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import StrEnum
-from typing import Any
+from typing import Any, ClassVar
 
 
 class TaskStatus(StrEnum):
@@ -30,7 +30,7 @@ class TaskState:
     checkpoint_required: bool = True
     metadata: dict[str, Any] = field(default_factory=dict)
 
-    _TRANSITIONS = {
+    _TRANSITIONS: ClassVar[dict[TaskStatus, set[TaskStatus]]] = {
         TaskStatus.PENDING: {TaskStatus.READY, TaskStatus.BLOCKED, TaskStatus.CANCELLED},
         TaskStatus.READY: {TaskStatus.RUNNING, TaskStatus.BLOCKED, TaskStatus.CANCELLED},
         TaskStatus.RUNNING: {TaskStatus.COMPLETED, TaskStatus.FAILED, TaskStatus.BLOCKED},
@@ -44,9 +44,7 @@ class TaskState:
         if status == self.status:
             return
         if status not in self._TRANSITIONS[self.status]:
-            raise InvalidTaskTransition(
-                f"cannot transition task {self.task_id} from {self.status} to {status}"
-            )
+            raise InvalidTaskTransition(f"cannot transition task {self.task_id} from {self.status} to {status}")
         self.status = status
 
 
@@ -96,7 +94,5 @@ def resolve_task_readiness(tasks: list[TaskState]) -> None:
         elif all(dep.status == TaskStatus.COMPLETED for dep in dependencies):
             if task.status in {TaskStatus.PENDING, TaskStatus.BLOCKED, TaskStatus.FAILED}:
                 task.transition_to(TaskStatus.READY)
-        elif task.status == TaskStatus.READY:
-            task.transition_to(TaskStatus.BLOCKED)
-        elif task.status == TaskStatus.PENDING and dependencies:
+        elif task.status == TaskStatus.READY or task.status == TaskStatus.PENDING and dependencies:
             task.transition_to(TaskStatus.BLOCKED)
