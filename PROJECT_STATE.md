@@ -14,11 +14,13 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
-- Active implementation branch: `feature/provenance-evidence-pipeline`
+- Active implementation branch: `feature/provenance-source-registry`
 - PR #17 is merged into `main`.
 - Recovery PR #20 is merged into `main` at `bd4c2386b225ee0439ce22b1766fe4da355a14ab`.
 - Issue #4 is complete.
 - Issue #6 is the active product workstream.
+- PR #21 remains open for the first Issue #6 increment.
+- This branch continues Issue #6 from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -57,21 +59,25 @@ Requirement scope:
 - explicit evidence classes
 - reproducible processing records
 
-Current implementation increment:
-- Versioned `1.0` JSON Schemas for source, passage, claim, evidence reference, processing record, and provenance record.
-- Strict provenance validation with schema-version enforcement and fail-closed type/invariant checks.
-- Cross-artifact validation enforcing source, passage, claim, evidence-reference, and provenance identity links.
-- Fail-closed protection against classifying a translation source as primary textual evidence.
-- Representative source, passage, claim, evidence-reference, and provenance fixtures.
-- Automated fixture schema validation and end-to-end source-to-claim chain validation.
-- Unit coverage for malformed provenance and broken cross-artifact links.
-- Architecture and requirement documentation updated on the feature branch.
+## Current implementation increments
+
+PR #21 establishes the versioned provenance contracts and fail-closed evidence-chain validation.
+
+Branch `feature/provenance-source-registry` continues the requirement with:
+- storage-neutral `SourceRegistry`
+- stable source identity and idempotent registration
+- fail-closed conflicting source-ID reuse
+- separate acquisition records linked to registered sources
+- retrieval timestamp, method, locator, content digest, and metadata
+- timezone-aware acquisition timestamps
+- unit coverage for registry and acquisition invariants
+- architecture documentation for the new source/acquisition boundary
 
 ## Validation status
 
-PR #21 is open against `main`. GitHub reports the feature branch head as `e37631a7981da74274e5627417138c43a1c60a22`.
+PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 
-CI run #189 completed successfully for the current PR head.
+The new branch has implementation commits after that validated head and therefore requires its own full CI run before its pull request is merged.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
