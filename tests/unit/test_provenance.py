@@ -29,7 +29,8 @@ def test_valid_provenance_is_accepted() -> None:
 
 
 @pytest.mark.parametrize(
-    "field", ["id", "artifact_id", "source_ids", "evidence_class", "processing_steps"]
+    "field",
+    ["id", "artifact_id", "source_ids", "evidence_class", "processing_steps"],
 )
 def test_missing_required_provenance_fails(field: str) -> None:
     record = valid_record()
