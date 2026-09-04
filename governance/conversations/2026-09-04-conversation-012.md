@@ -24,17 +24,19 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
 - Updated architecture and project state to record the new boundary.
 - Corrected CI workflow targeting so dependent pull requests into `feature/provenance-evidence-pipeline` receive the mandatory validation workflow.
-- Synchronized the branch project state with PR #21 CI run #192 and current PR #22 head.
+- CI run #195 verified the first formatting failure on PR #22. Ruff identified two unformatted files: `backend/sanatana_ai/source_registry.py` and `tests/unit/test_source_registry.py`.
+- Corrected both files on `feature/provenance-source-registry` in commits `f5f30d22a1d87f0a2f9c8e342e81d2de563f3399` and `023db184f23ec636430c739463788b6b1206bed8`.
+- Synchronized project state with the verified PR #21 CI result and current PR #22 CI state.
 
 ## Validation
-PR #21 CI run #192 is in progress for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
+PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 head is `6d147a3091fe0df1bed910f60beb9280e91a293b`. No completed CI result is currently recorded for this head.
+PR #22 CI run #195 failed at formatting. The verified failure was limited to two Ruff formatting violations. Fresh CI run #197 is now in progress for corrected head `023db184f23ec636430c739463788b6b1206bed8`. No result is asserted until it completes.
 
 No local test result is asserted here because execution has not been performed in this session.
 
 ## Review and gate
-The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review.
+The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review. PR #22 requires its own successful CI and independent review before integration.
 
 ## Result
-The next Issue #6 increment remains implemented on a dedicated branch without changing `main`. CI targeting for the dependent provenance branch has been corrected without weakening any validation gate.
+The formatting blocker in PR #22 was fixed at source without weakening the CI gate. The corrected branch remains dedicated to Issue #6 and does not modify `main` directly.
