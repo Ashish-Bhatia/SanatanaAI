@@ -66,12 +66,12 @@ def validate_provenance(record: dict[str, Any]) -> ProvenanceRecord:
     if missing:
         raise ValueError(f"missing provenance fields: {sorted(missing)}")
     try:
-        created_at = datetime.fromisoformat(str(record["created_at"]).replace("Z", "+00:00"))
+        created_at = datetime.fromisoformat(str(record["created_at"]))
     except ValueError as exc:
         raise ValueError("created_at must be ISO-8601") from exc
     steps = record["processing_steps"]
     if not isinstance(steps, list):
-        raise ValueError("processing_steps must be a list")
+        raise TypeError("processing_steps must be a list")
     return ProvenanceRecord(
         id=str(record["id"]),
         artifact_id=str(record["artifact_id"]),
