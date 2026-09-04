@@ -16,7 +16,16 @@ EVIDENCE_CLASSES = frozenset(
 )
 
 ARTIFACT_TYPES = frozenset(
-    {"source", "text", "manuscript", "passage", "claim", "entity", "relationship", "article"}
+    {
+        "source",
+        "text",
+        "manuscript",
+        "passage",
+        "claim",
+        "entity",
+        "relationship",
+        "article",
+    }
 )
 
 
@@ -44,7 +53,15 @@ class ProvenanceRecord:
 
 
 def validate_provenance(record: dict[str, Any]) -> ProvenanceRecord:
-    required = {"id", "artifact_id", "artifact_type", "source_ids", "evidence_class", "created_at", "processing_steps"}
+    required = {
+        "id",
+        "artifact_id",
+        "artifact_type",
+        "source_ids",
+        "evidence_class",
+        "created_at",
+        "processing_steps",
+    }
     missing = required.difference(record)
     if missing:
         raise ValueError(f"missing provenance fields: {sorted(missing)}")
