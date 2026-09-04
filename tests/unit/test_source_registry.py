@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
@@ -20,7 +20,7 @@ def acquisition(
     return AcquisitionRecord(
         id=acquisition_id,
         source_id=source_id,
-        retrieved_at=datetime(2026, 9, 4),
+        retrieved_at=datetime(2026, 9, 4, tzinfo=timezone.utc),
         retrieval_method="fixture",
         locator="fixtures/source-1.txt",
         content_digest="sha256:example",
@@ -59,11 +59,12 @@ def test_acquisition_is_linked_to_source() -> None:
 
 
 def test_acquisition_requires_timezone_aware_timestamp() -> None:
+    naive_timestamp = datetime.fromisoformat("2026-09-04T00:00:00")
     with pytest.raises(ValueError, match="timezone-aware"):
         AcquisitionRecord(
             id="acq-1",
             source_id="source-1",
-            retrieved_at=datetime(2026, 9, 4),
+            retrieved_at=naive_timestamp,
             retrieval_method="fixture",
             locator="fixtures/source-1.txt",
             content_digest="sha256:example",
