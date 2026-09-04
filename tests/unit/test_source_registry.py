@@ -63,7 +63,7 @@ def test_acquisition_requires_timezone_aware_timestamp() -> None:
         AcquisitionRecord(
             id="acq-1",
             source_id="source-1",
-            retrieved_at=datetime(2026, 9, 4, tzinfo=timezone.utc),
+            retrieved_at=datetime(2026, 9, 4),
             retrieval_method="fixture",
             locator="fixtures/source-1.txt",
             content_digest="sha256:example",
