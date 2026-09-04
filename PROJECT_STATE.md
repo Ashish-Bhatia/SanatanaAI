@@ -22,10 +22,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #21 remains open for the first Issue #6 increment.
 - PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
 - PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `a22700f0957324e4df4c6aec539856d0840e9874`.
-- CI run #217 failed at Ruff linting on the PR #22 merge ref. The verified failures were `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
-- The lint failures were corrected at source in commit `a22700f0957324e4df4c6aec539856d0840e9874`.
-- Fresh CI for the corrected head is required and has not yet been exposed by GitHub.
+- PR #22 current head is `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
+- PR #22 CI run #220 completed successfully for current head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
+- Earlier PR #22 CI failures #209, #212, and #217 were fixed at source without weakening CI gates.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -85,15 +84,17 @@ The CI workflow was corrected so pull requests targeting the provenance integrat
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The source was corrected in subsequent remediation work.
+PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. Corrected at source.
 
-PR #22 CI run #212 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The source was corrected in subsequent remediation work.
+PR #22 CI run #212 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. Corrected at source.
 
-PR #22 CI run #217 failed at linting on merge ref `85d495422cdd6ae60703563cf6c2d2a460017c5c`. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
+PR #22 CI run #217 failed at linting on merge ref `85d495422cdd6ae60703563cf6c2d2a460017c5c`. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`. Corrected at source.
 
-The verified remediation is commit `a22700f0957324e4df4c6aec539856d0840e9874`. Fresh CI for the corrected head is required. No fresh CI result is asserted until GitHub exposes it.
+PR #22 CI run #220 completed successfully for head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
+
+PR #22 is open and has no completed independent review recorded.
 
 ## Delivery rules
 
