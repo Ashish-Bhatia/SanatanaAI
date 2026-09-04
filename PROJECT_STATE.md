@@ -14,9 +14,8 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
-- Active implementation branch: `feature/provenance-evidence-pipeline`
-- PR #17 is merged into `main`.
-- Recovery PR #20 is merged into `main` at `bd4c2386b225ee0439ce22b1766fe4da355a14ab`.
+- Main baseline: `1cc6fe93611b5e0b058c9d53aebe294284bebadc`
+- PR #21, `feat: establish provenance evidence contracts`, is merged into `main`.
 - Issue #4 is complete.
 - Issue #6 is the active product workstream.
 - Issues #7 through #13 remain subsequent workstreams.
@@ -57,23 +56,38 @@ Requirement scope:
 - explicit evidence classes
 - reproducible processing records
 
-Current implementation increment:
-- Versioned `1.0` JSON Schemas for source, passage, claim, evidence reference, processing record, and provenance record.
-- Strict provenance validation with schema-version enforcement and fail-closed type/invariant checks.
-- Cross-artifact validation enforcing source, passage, claim, evidence-reference, and provenance identity links.
-- Fail-closed protection against classifying a translation source as primary textual evidence.
-- Representative source, passage, claim, evidence-reference, and provenance fixtures.
-- Automated fixture schema validation and end-to-end source-to-claim chain validation.
-- Unit coverage for malformed provenance and broken cross-artifact links.
-- Architecture and requirement documentation updated on the feature branch.
+## Validated increment merged to main
+
+PR #21 established the first provenance evidence-contract increment and is merged into `main` at `1cc6fe93611b5e0b058c9d53aebe294284bebadc`.
+
+It includes versioned `1.0` JSON Schemas for source, passage, claim, evidence reference, processing record, and provenance record, strict fail-closed validation, cross-artifact identity validation, evidence-class separation, representative fixtures, and automated tests.
+
+## Current implementation increment
+
+PR #22, `feat: add source registry and acquisition metadata`, is open against `main`.
+
+Branch: `feature/provenance-source-registry`
+Head: `444c9fe4b5e03010a5707bc7d7489fbe4193bcfd`
+
+Scope:
+- storage-neutral `SourceRegistry`
+- stable `SourceRecord` validation and idempotent registration
+- fail-closed conflicting source identifiers
+- separate `AcquisitionRecord` linked to a registered source
+- timezone-aware retrieval timestamps
+- locator, retrieval method, content digest, and metadata
+- versioned acquisition schema
+- unit coverage for identity, linkage, idempotency, and timestamp invariants
+
+PR #22 was retargeted to `main` after PR #21 merged. Fresh CI after retargeting is required and no result is claimed until GitHub reports it.
+
+PR #23 remains open for text representations and addressable passages, based on the earlier source-registry branch. It should be reconciled after PR #22 integration rather than merged as an independent parallel path.
 
 ## Validation status
 
-PR #21 is open against `main`. GitHub reports the feature branch head as `e37631a7981da74274e5627417138c43a1c60a22`.
-
-CI run #189 completed successfully for the current PR head.
-
-PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
+- Main contains merged PR #21.
+- PR #22 requires fresh CI after retargeting and review before merge.
+- PR #23 requires reconciliation with the clean `main` integration path before merge.
 
 ## Delivery rules
 
