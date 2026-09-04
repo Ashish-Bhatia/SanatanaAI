@@ -18,7 +18,7 @@ Continue Issue #6 after the provenance contract increment, implementing stable s
 PR #21 established versioned source, passage, claim, evidence-reference, processing-record, and provenance contracts and passed CI run #192 on its validated head. The next incomplete Issue #6 scope item is source registry and acquisition/retrieval metadata.
 
 ## Implementation
-- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c2a1a544071c216ef95453`.
+- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 - Added `SourceRecord`, `AcquisitionRecord`, and storage-neutral `SourceRegistry`.
 - Added versioned acquisition JSON Schema.
 - Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
@@ -28,7 +28,8 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - CI run #204 reproduced the lint failure on the then-current branch merge ref. The source was corrected without changing CI rules.
 - CI run #209 reproduced the import-ordering violation on the PR #22 merge ref. The import block was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`.
 - CI run #212 reproduced the same import-ordering violation on the PR #22 merge ref. The import block was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`.
-- Project state was synchronized after the latest remediation.
+- Project state was synchronized after the latest remediation in commit `fae73c5fbd9042a01acaa09e95226841a3937550`.
+- Conversation record was synchronized after the latest remediation in commit `c039a9cf75301fcab3b6a29a4fe704a2906a0b4a`.
 
 ## Validation
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
