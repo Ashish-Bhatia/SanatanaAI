@@ -77,6 +77,10 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #16 was reviewed and merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`.
 - CI run 75 passed on the PR #16 merge commit.
 - Issue #5 was closed as completed after implementation, CI, review, documentation, and merge gates passed.
+- CI run 123 failed at Ruff linting with two I001 import-order violations in execution-control and schema-validation tests.
+- CI run 125 reproduced the same two Ruff I001 violations on PR #17's merge ref for branch head `2bf140f35dcda6526ee8b27d5218fba24363235b`.
+- The two violations were corrected in commits `c27e79f2542d8402bde4fa031033fa0e0e7843e3` and `88c10660aa366ba81749c1d032088f3b07eab3d1` on `feature/ci-quality-gates`.
+- A fresh CI run for the corrected head has not yet completed.
 - CI quality-gate expansion is in progress on `feature/ci-quality-gates`.
 - Issue #4 remains open until the expanded quality gates are fully implemented and validated.
 
