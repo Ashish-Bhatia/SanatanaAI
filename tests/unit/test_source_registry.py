@@ -14,7 +14,9 @@ def source() -> SourceRecord:
     )
 
 
-def acquisition(source_id: str = "source-1", acquisition_id: str = "acq-1") -> AcquisitionRecord:
+def acquisition(
+    source_id: str = "source-1", acquisition_id: str = "acq-1"
+) -> AcquisitionRecord:
     return AcquisitionRecord(
         id=acquisition_id,
         source_id=source_id,
