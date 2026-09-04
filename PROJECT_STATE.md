@@ -24,8 +24,10 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #22 current head is `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 - PR #22 CI run #220 passed for the current head.
 - PR #23 continues Issue #6 with text representations and addressable passages and targets `feature/provenance-source-registry`.
-- PR #23 current head is `6077c0a00b57884fa3a0d734624687ab16abf72a`.
-- PR #23 has no completed CI run yet.
+- PR #23 current head is `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+- PR #23 CI run #221 failed at the formatting gate on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+- The formatting failure was corrected at source in commit `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+- Fresh CI for the corrected PR #23 head is required.
 - PR #21 and PR #22 remain review-gated and must not be bypassed.
 - Issues #7 through #13 remain subsequent workstreams.
 
@@ -91,13 +93,15 @@ PR #23 establishes:
 - unit coverage for representation and passage invariants
 - architecture documentation for text/manuscript and passage boundaries
 
-The CI workflow is configured to validate pull requests targeting the provenance integration branches. PR #22 CI run #220 passed. PR #23 requires its own CI validation after the branch is integrated with a base branch carrying the applicable workflow trigger.
+The CI workflow is configured to validate pull requests targeting the provenance integration branches. PR #22 CI run #220 passed. PR #23 requires fresh CI validation after remediation of run #221.
 
 ## Validation status
 
 PR #22 CI run #220 completed successfully for head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 
-PR #23 has no completed CI run. No CI success is asserted for PR #23.
+PR #23 CI run #221 failed at formatting on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`. The verified failure was formatting in the text representation tests. The failure was corrected at source in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+
+Fresh CI for PR #23 head `ba6aa84a0cd1fd7f4c512b36e767908c10122667` is required. No fresh success is asserted.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review approval is recorded.
 
