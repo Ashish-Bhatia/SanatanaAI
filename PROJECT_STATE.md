@@ -17,7 +17,7 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Active implementation branch: `feature/provenance-evidence-pipeline`
 - PR #17 is merged into `main`.
 - Recovery PR #20 is merged into `main` at `bd4c2386b225ee0439ce22b1766fe4da355a14ab`.
-- Issue #4 is complete and ready to be closed after state synchronization.
+- Issue #4 is complete.
 - Issue #6 is the active product workstream.
 - Issues #7 through #13 remain subsequent workstreams.
 
@@ -60,12 +60,16 @@ Requirement scope:
 Current implementation increment:
 - Versioned `1.0` JSON Schemas for source, passage, claim, evidence reference, processing record, and provenance record.
 - Strict provenance validation with schema-version enforcement and fail-closed type/invariant checks.
-- Unit coverage for schema version, source list typing, duplicate sources, and malformed processing steps.
-- Architecture updated with the source-to-claim evidence chain and provenance invariants.
+- Cross-artifact validation enforcing source, passage, claim, evidence-reference, and provenance identity links.
+- Fail-closed protection against classifying a translation source as primary textual evidence.
+- Representative source, passage, claim, evidence-reference, and provenance fixtures.
+- Automated fixture schema validation and end-to-end source-to-claim chain validation.
+- Unit coverage for malformed provenance and broken cross-artifact links.
+- Architecture and requirement documentation updated on the feature branch.
 
 ## Validation status
 
-The provenance implementation is on `feature/provenance-evidence-pipeline`. CI validation is required before merge. No claim of green CI is made until GitHub reports the current PR head as passing all required gates.
+PR #21 is open against `main`. Fresh CI run #173 is queued for head `698eb50a7fadec97eed9bd95c54b46e418efa3c3`. No claim of green CI is made until GitHub reports the current PR head as passing all required gates.
 
 ## Delivery rules
 
