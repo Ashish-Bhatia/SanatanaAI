@@ -22,7 +22,7 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #21 remains open for the first Issue #6 increment.
 - PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
 - PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `023db184f23ec636430c739463788b6b1206bed8`; CI run #197 is in progress for this head.
+- PR #22 current head is `ed5661adac49521c5afbcdd3db2a4e1ad300caf7`; CI run #200 is queued for this head.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -82,7 +82,7 @@ The CI workflow was corrected so pull requests targeting the provenance integrat
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 current head is `023db184f23ec636430c739463788b6b1206bed8`. CI run #195 failed at formatting because two files were not Ruff-formatted. The verified remediation was committed on the feature branch in `f5f30d22a1d87f0a2f9c8e342e81d2de563f3399` and `023db184f23ec636430c739463788b6b1206bed8`. Fresh CI run #197 is in progress. No result is asserted until it completes.
+PR #22 CI run #199 failed at linting. The verified failures were `I001` import ordering and `DTZ001` use of a naive datetime in `tests/unit/test_source_registry.py`. The timezone-aware timestamp assertion is the intended contract, so the fixture was corrected rather than weakening the rule. The corrected commit is `ed5661adac49521c5afbcdd3db2a4e1ad300caf7`. Fresh CI run #200 is queued for that head. No result is asserted until it completes.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
