@@ -22,8 +22,8 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #21 remains open for the first Issue #6 increment.
 - PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
 - PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `7e3a6f9568409b223318a932452692ccaada610f`.
-- CI run #209 failed at Ruff import ordering in `tests/unit/test_source_registry.py` on the PR merge ref. The import-order violation was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`. Fresh CI for the corrected head is required.
+- PR #22 current head is `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`.
+- CI run #212 failed at Ruff import ordering in `tests/unit/test_source_registry.py` on the PR merge ref. The verified import-ordering violation was corrected in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`. Fresh CI for the corrected head is required.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -83,7 +83,9 @@ The CI workflow was corrected so pull requests targeting the provenance integrat
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The test import block was corrected at source without changing CI rules in commit `7e3a6f9568409b223318a932452692ccaada610f`.
+PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The import block was corrected at source in commit `7e3a6f9568409b223318a932452692ccaada610f`.
+
+PR #22 CI run #212 reproduced the import-ordering failure on the PR merge ref. The import block was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`.
 
 No result is asserted for the corrected head until fresh CI completes.
 
