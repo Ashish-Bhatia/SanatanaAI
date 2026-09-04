@@ -10,10 +10,8 @@ FIXTURE_DIR = ROOT / "data" / "fixtures" / "provenance"
 SCHEMA_DIR = ROOT / "schemas"
 
 
-
 def load_json(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
-
 
 
 def test_representative_provenance_fixtures_match_schemas() -> None:
@@ -26,8 +24,10 @@ def test_representative_provenance_fixtures_match_schemas() -> None:
     }
 
     for fixture_name, schema_name in fixture_schema_pairs.items():
-        validate(load_json(FIXTURE_DIR / f"{fixture_name}.json"), load_json(SCHEMA_DIR / schema_name))
-
+        validate(
+            load_json(FIXTURE_DIR / f"{fixture_name}.json"),
+            load_json(SCHEMA_DIR / schema_name),
+        )
 
 
 def test_representative_fixture_forms_valid_source_to_claim_chain() -> None:
