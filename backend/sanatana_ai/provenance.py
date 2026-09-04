@@ -131,8 +131,5 @@ def validate_evidence_chain(
         raise ValueError("claim provenance does not include supporting source")
     if claim.get("evidence_class") != provenance.get("evidence_class"):
         raise ValueError("claim and provenance evidence classes do not match")
-    if (
-        claim.get("evidence_class") == "primary_textual_evidence"
-        and source.get("source_type") == "translation"
-    ):
+    if claim.get("evidence_class") == "primary_textual_evidence" and source.get("source_type") == "translation":
         raise ValueError("translation source cannot be classified as primary textual evidence")
