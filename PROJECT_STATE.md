@@ -22,8 +22,8 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - PR #21 remains open for the first Issue #6 increment.
 - PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
 - PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `4df4c43966546a1103913020dbd8a8c943fe4548`.
-- PR #22 CI run #204 failed at Ruff linting. Fresh CI for the corrected head is required.
+- PR #22 current head is `7e3a6f9568409b223318a932452692ccaada610f`.
+- CI run #209 failed at Ruff import ordering in `tests/unit/test_source_registry.py` on the PR merge ref. The import-order violation was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`. Fresh CI for the corrected head is required.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -83,9 +83,9 @@ The CI workflow was corrected so pull requests targeting the provenance integrat
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 CI run #204 failed at linting. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`. The test was corrected at source without changing CI rules. The corrected test keeps timezone-aware timestamps for valid acquisition fixtures and constructs the intentionally naive rejection fixture without triggering DTZ001. Correction commits are `96ade05b142e43c815b593cc40906bc44eadd45f` and `4df4c43966546a1103913020dbd8a8c943fe4548`.
+PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The test import block was corrected at source without changing CI rules in commit `7e3a6f9568409b223318a932452692ccaada610f`.
 
-No result is asserted for the current head until fresh CI completes.
+No result is asserted for the corrected head until fresh CI completes.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
