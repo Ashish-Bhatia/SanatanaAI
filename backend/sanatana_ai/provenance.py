@@ -101,3 +101,35 @@ def validate_provenance(record: dict[str, Any]) -> ProvenanceRecord:
         processing_steps=tuple(steps),
         schema_version=str(record["schema_version"]),
     )
+
+
+def validate_evidence_chain(
+    source: dict[str, Any],
+    passage: dict[str, Any],
+    claim: dict[str, Any],
+    evidence_reference: dict[str, Any],
+    provenance: dict[str, Any],
+) -> None:
+    """Validate the identity links across one source-to-claim evidence chain."""
+    validate_provenance(provenance)
+
+    if source.get("id") != passage.get("source_id"):
+        raise ValueError("passage source does not match source identity")
+    if claim.get("id") != evidence_reference.get("claim_id"):
+        raise ValueError("evidence reference claim does not match claim identity")
+    if passage.get("id") != evidence_reference.get("passage_id"):
+        raise ValueError("evidence reference passage does not match passage identity")
+    if claim.get("provenance_id") != evidence_reference.get("provenance_id"):
+        raise ValueError("claim and evidence reference provenance do not match")
+    if provenance.get("id") != evidence_reference.get("provenance_id"):
+        raise ValueError("evidence reference provenance does not exist")
+    if provenance.get("artifact_id") != claim.get("id"):
+        raise ValueError("provenance artifact does not match claim")
+    if provenance.get("artifact_type") != "claim":
+        raise ValueError("claim provenance must target a claim artifact")
+    if source.get("id") not in provenance.get("source_ids", []):
+        raise ValueError("claim provenance does not include supporting source")
+    if claim.get("evidence_class") != provenance.get("evidence_class"):
+        raise ValueError("claim and provenance evidence classes do not match")
+    if claim.get("evidence_class") == "primary_textual_evidence" and source.get("source_type") == "translation":
+        raise ValueError("translation source cannot be classified as primary textual evidence")
