@@ -59,30 +59,13 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 
 ## Validation status
 
-- CI runs 22, 23, 24, and 29 passed on earlier corrected heads.
-- CI run 50 passed on the orchestration execution increment.
-- CI run 51 passed on the validated orchestration-core head before PR #2 integration.
-- CI run 52 passed on Foundation head `14a019b538836171e31a932f23d3e68879608bd0` before PR #1 integration.
-- PR #2 was reviewed and merged into `foundation/phase-0`.
-- PR #1 was merged into `main` after its merge conflict was reconciled.
-- CI run 61 passed on PR #14 head `69f68991207072a357fc772d4b9675de2481df9c`.
-- CI run 62 passed on main merge commit `56d975cfcdfc7425f5c0493dc39ec381702cdd31`.
-- CI run 63 passed on main state commit `3ae48550b041c07855267ffb78195882e8e0bec1`.
-- CI run 67 failed during an intermediate artifact-schema change; the failing test fixture was corrected.
-- CI run 68 failed on an input/output artifact-type fixture mismatch; runtime governance was intentionally not weakened and the fixture was corrected in commit `5695d0316c90657fb2645094fcf059f930f041af`.
-- CI run 69 passed on the corrected agent-governance head before final governance-log synchronization.
-- CI run 70 passed on the final agent-governance head `7d3c240ae94d734cf2643c1014a4139c3bcc3332`.
-- PR #15 was reviewed and merged into `main` with merge commit `e7f03a59aeb57559fa163db607883cb12b25ee73`.
-- CI run 74 passed on PR #16 head `ac36374bf4042c16fe572ad0bb3d1f9b0a10bdb0`.
-- PR #16 was reviewed and merged into `main` with merge commit `f57332adc1642647ca767ac4b02c3809060dce9e`.
-- CI run 75 passed on the PR #16 merge commit.
-- Issue #5 was closed as completed after implementation, CI, review, documentation, and merge gates passed.
-- CI run 123 failed at Ruff linting with two I001 import-order violations in execution-control and schema-validation tests.
-- CI run 125 reproduced the same two Ruff I001 violations on PR #17's merge ref for branch head `2bf140f35dcda6526ee8b27d5218fba24363235b`.
-- The two violations were corrected in commits `c27e79f2542d8402bde4fa031033fa0e0e7843e3` and `88c10660aa366ba81749c1d032088f3b07eab3d1` on `feature/ci-quality-gates`.
-- A fresh CI run for the corrected head has not yet completed.
-- CI quality-gate expansion is in progress on `feature/ci-quality-gates`.
-- Issue #4 remains open until the expanded quality gates are fully implemented and validated.
+- Earlier Foundation and orchestration validation runs passed through CI run 75 and PR #16 merge.
+- CI run #129 failed on the PR #17 merge ref, not the latest feature-branch commit. The merge ref contained two Ruff I001 import-order violations in execution-control and schema-validation tests.
+- CI run #129 passed JSON validation, dependency installation, required-file validation, agent/artifact registry validation, ADR structure validation, and Ruff formatting before failing Ruff linting.
+- The two import-order failures were corrected on `feature/ci-quality-gates` in commits `f86b9a57ff311cc48228f0f41a4b605a187e9f3d` and `88e85401368ca3e9860ac470befa78db672ef53a`.
+- The latest branch head is `88e85401368ca3e9860ac470befa78db672ef53a`, with both corrected import groups committed.
+- Fresh PR CI for the latest branch head has not yet been observed. CI therefore remains unverified.
+- Issue #4 remains open until the expanded quality gates pass on the current PR head and the PR review/merge gates complete.
 
 ## Current work
 
