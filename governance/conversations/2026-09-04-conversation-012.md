@@ -3,40 +3,32 @@
 Date: 2026-09-04
 
 ## Objective
-Complete Issue #5 runtime governance and execution-control work, validate the merged result, and synchronize project state.
+Continue Issue #6 after the provenance contract increment, implementing stable source registration and explicit acquisition metadata without introducing storage or infrastructure coupling.
 
 ## Requirements
-- Do not close the issue before implementation, validation, documentation, and merge gates pass.
-- Preserve strict governance semantics after CI failures.
-- Record the final execution-control boundary and validation outcome.
-- Delegate execution provenance records and validation outcomes to the provenance workstream rather than duplicating it in runtime governance.
+- Stable source identity and explicit source metadata.
+- Separate acquisition identity from source identity.
+- Record retrieval time, method, locator, content digest, and metadata.
+- Reject acquisitions for unknown sources.
+- Reject conflicting reuse of source or acquisition identifiers.
+- Preserve timezone-aware retrieval timestamps.
+- Keep the registry storage-neutral and deterministic.
 
-## Decisions
-- Keep `RetryableAgentError` as the only retry classification in the current control layer.
-- Keep timeout and cancellation cooperative. Do not claim hard termination of arbitrary Python execution.
-- Require contextual executor support whenever timeout or cancellation is requested.
-- Treat execution provenance and validation outcome persistence as issue #6 scope.
+## Analysis
+PR #21 established versioned source, passage, claim, evidence-reference, processing-record, and provenance contracts and passed CI run #191 on its validated head. The next incomplete Issue #6 scope item is source registry and acquisition/retrieval metadata.
 
-## Actions
-- PR #15 merged core runtime agent governance.
-- PR #16 merged cooperative retry, timeout, cancellation, ADR-0004, architecture updates, tests, and CI gating.
-- CI run #74 passed PR #16.
-- Main CI run #75 passed after PR #16 merge.
-- Issue #5 was updated with completion evidence and closed as completed.
+## Implementation
+- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
+- Added `SourceRecord`, `AcquisitionRecord`, and storage-neutral `SourceRegistry`.
+- Added versioned acquisition JSON Schema.
+- Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
+- Updated architecture and project state to record the new boundary.
 
-## Resulting state
-Issue #5 is complete. The next major engineering workstream is issue #4 CI quality gates in parallel with issue #6 provenance implementation, followed by mission orchestration and knowledge work.
+## Validation
+A fresh CI run is required for the new branch before merge. No local test result is asserted here because execution has not been performed in this session.
 
-## Unresolved
-- Hard worker isolation remains a future decision only if production requirements demand hard timeout/cancellation guarantees.
-- Execution provenance and validation outcome persistence remain in issue #6.
-- Issue #4 remains open for broader quality-gate enforcement.
+## Review and gate
+The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review.
 
-## CI remediation update
-
-- CI run #123 failed at Ruff linting with two I001 import-order violations in `tests/unit/test_execution_control.py` and `tests/unit/test_schema_validation.py`.
-- CI run #125 reproduced the same two I001 violations against PR #17 merge ref `a158647169019419911d68ae48b05c4e839949ec`.
-- The imports were corrected on `feature/ci-quality-gates` in commits `c27e79f2542d8402bde4fa031033fa0e0e7843e3` and `88c10660aa366ba81749c1d032088f3b07eab3d1`.
-- Project state synchronization was committed as `2a91d01093be6aaace583ff72318e51e58294f92`.
-- No CI gate was weakened. No substantive change was made directly to `main`.
-- Fresh CI for the corrected head remains unverified at the time of this record.
+## Result
+The next Issue #6 increment is implemented on a dedicated branch without changing `main`. Source identity and acquisition history are now represented as separate governed artifacts.
