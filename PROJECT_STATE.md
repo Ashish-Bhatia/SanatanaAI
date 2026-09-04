@@ -69,7 +69,11 @@ Current implementation increment:
 
 ## Validation status
 
-PR #21 is open against `main`. CI run #176 failed at `ruff format --check backend tests` for head `5a6cd856216143973374a7543178515e9fbe4fd0`. The configured Ruff line length is 120, so the provenance condition was corrected to the formatter-compatible single-line form. Corrective commit: `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`. Fresh CI for this head has not yet been reported.
+PR #21 is open against `main`. Latest head: `97fe8e041f9e606919f6b6bb65747bcd5f71c0f8`.
+
+CI run #182 completed successfully for this head. The full workflow is therefore green for the current commit.
+
+PR #21 still requires review before merge. No review submissions are currently recorded.
 
 ## Delivery rules
 
