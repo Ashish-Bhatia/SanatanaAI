@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sanatana.ai/schemas/source_record.schema.json",
+  "title": "Source Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "title", "source_type", "metadata"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "source_type": {"type": "string", "enum": ["text", "manuscript", "edition", "translation", "commentary", "secondary_source"]},
+    "metadata": {"type": "object", "minProperties": 1, "additionalProperties": true}
+  }
+}
