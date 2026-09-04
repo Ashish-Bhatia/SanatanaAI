@@ -15,10 +15,10 @@ Continue Issue #6 after the provenance contract increment, implementing stable s
 - Keep the registry storage-neutral and deterministic.
 
 ## Analysis
-PR #21 established versioned source, passage, claim, evidence-reference, processing-record, and provenance contracts and passed CI run #192 on its validated head. The next incomplete Issue #6 scope item is source registry and acquisition/retrieval metadata.
+PR #21 established versioned source, passage, claim, evidence-reference, processing-record, and provenance contracts. The next incomplete Issue #6 scope item is source registry and acquisition/retrieval metadata.
 
 ## Implementation
-- Created `feature/provenance-source-registry` from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
+- Created `feature/provenance-source-registry` from the PR #21 implementation.
 - Added `SourceRecord`, `AcquisitionRecord`, and storage-neutral `SourceRegistry`.
 - Added versioned acquisition JSON Schema.
 - Added unit tests for idempotency, conflicting identifiers, source linkage, and timezone-aware retrieval.
@@ -26,20 +26,23 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - Corrected CI workflow targeting so dependent pull requests into `feature/provenance-evidence-pipeline` receive the mandatory validation workflow.
 - CI run #199 failed at linting. Ruff identified two violations in `tests/unit/test_source_registry.py`: import ordering (`I001`) and a naive datetime fixture (`DTZ001`).
 - CI run #204 reproduced the lint failure on the then-current branch merge ref. The source was corrected without changing CI rules.
-- CI run #209 reproduced the import-ordering violation on the PR #22 merge ref. The import block was corrected in commit `7e3a6f9568409b223318a932452692ccaada610f`.
-- CI run #212 reproduced the same import-ordering violation on the PR #22 merge ref. The import block was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`.
-- Project state was synchronized after the latest remediation in commit `fae73c5fbd9042a01acaa09e95226841a3937550`.
-- Conversation record was synchronized after the latest remediation in commit `c039a9cf75301fcab3b6a29a4fe704a2906a0b4a`.
+- CI run #209 reproduced the import-ordering violation on the PR #22 merge ref. The import block was corrected in prior remediation work.
+- CI run #212 reproduced the same import-ordering violation on the PR #22 merge ref. The import block was corrected in prior remediation work.
+- CI run #217 reproduced the lint failures on the PR #22 merge ref. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
+- The verified source correction was committed as `a22700f0957324e4df4c6aec539856d0840e9874`.
+- Project state was synchronized after the latest remediation in commit `dd38b2c358ef7e0fba68866efddbe514d9a6572f`.
 
 ## Validation
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #22 CI run #209 failed at linting on merge ref `91360c2f11e8725b498f5948f4e2f2ae5ecf57e6`. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
+PR #22 CI run #209 failed at linting on the PR merge ref. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
 
-PR #22 CI run #212 failed at linting on merge ref `14e2026914e51b3a69d6ba019c7cb1b8127d6134`. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
+PR #22 CI run #212 failed at linting on the PR merge ref. The verified failure was `I001` import ordering in `tests/unit/test_source_registry.py`.
 
-The import-ordering failure was corrected at source in commit `faf3eb4f9ad96a425d0d02f7127debafd0052ef2`. Fresh CI is required for the corrected head and no result is asserted until GitHub exposes it.
+PR #22 CI run #217 failed at linting on merge ref `85d495422cdd6ae60703563cf6c2d2a460017c5c`. The verified failures were `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
+
+The verified remediation is commit `a22700f0957324e4df4c6aec539856d0840e9874`. Fresh CI for the corrected head is required. No fresh CI result is asserted until GitHub exposes it.
 
 No local test result is asserted here because execution has not been performed in this session.
 
