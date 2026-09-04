@@ -41,8 +41,9 @@ Implemented on `feature/provenance-evidence-pipeline`:
 
 - CI run #176 failed at `ruff format --check backend tests` on head `5a6cd856216143973374a7543178515e9fbe4fd0`.
 - The configured Ruff line length is 120. The provenance condition was corrected to the formatter-compatible single-line form in commit `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`.
-- Governance synchronization subsequently moved the PR to head `832b2a8d6c53eee89edbd5002e057d9e0dac11d6`.
-- CI run #184 completed successfully for the current head.
+- Governance synchronization subsequently moved the PR through intermediate heads.
+- CI run #184 completed successfully for PR #21 head `7ea737163911a3ebf1cde616a6a4860dbfdd499b`.
+- The current PR head is `7ea737163911a3ebf1cde616a6a4860dbfdd499b`.
 - PR #21 remains open and requires an independent review before merge.
 
 ## Governance
