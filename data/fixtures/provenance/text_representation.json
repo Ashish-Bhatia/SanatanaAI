@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "id": "repr-001",
-  "source_id": "source-001",
+  "id": "representation-fixture-1",
+  "source_id": "source-fixture-1",
   "representation_type": "original",
   "language": "sa",
-  "text": "धर्मस्य तत्त्वं निहितं गुहायाम्"
+  "text": "स्रोत-पाठ परीक्षण के लिए प्रतिनिधि अनुच्छेद।"
 }
