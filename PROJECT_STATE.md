@@ -69,9 +69,9 @@ Current implementation increment:
 
 ## Validation status
 
-PR #21 is open against `main`. Latest head: `7ea737163911a3ebf1cde616a6a4860dbfdd499b`.
+PR #21 is open against `main`. GitHub currently reports the feature branch head as the current PR head.
 
-CI run #186 completed successfully for this head. The full workflow is green for the current commit.
+CI run #186 completed successfully for the previously validated PR #21 head `7ea737163911a3ebf1cde616a6a4860dbfdd499b`. Subsequent governance synchronization commits require a fresh CI run before merge.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
