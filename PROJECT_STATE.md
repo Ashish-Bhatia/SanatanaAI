@@ -69,7 +69,7 @@ Current implementation increment:
 
 ## Validation status
 
-PR #21 is open against `main`. Fresh CI run #173 is queued for head `698eb50a7fadec97eed9bd95c54b46e418efa3c3`. No claim of green CI is made until GitHub reports the current PR head as passing all required gates.
+PR #21 is open against `main`. CI run #176 failed at `ruff format --check backend tests` for head `5a6cd856216143973374a7543178515e9fbe4fd0`. The configured Ruff line length is 120, so the provenance condition was corrected to the formatter-compatible single-line form. Corrective commit: `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`. Fresh CI for this head has not yet been reported.
 
 ## Delivery rules
 
