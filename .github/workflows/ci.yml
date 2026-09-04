@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [main, foundation/phase-0]
+    branches: [main, foundation/phase-0, feature/provenance-evidence-pipeline]
   push:
     branches: [main, foundation/phase-0]
 
