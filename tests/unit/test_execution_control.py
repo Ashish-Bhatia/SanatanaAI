@@ -1,7 +1,6 @@
 import time
 
 import pytest
-
 from sanatana_ai.contracts.agent import AgentRequest, AgentResult
 from sanatana_ai.orchestration.control import (
     CancellationToken,
@@ -13,7 +12,6 @@ from sanatana_ai.orchestration.control import (
     ExecutionTimedOut,
     RetryableAgentError,
 )
-
 
 REQUEST = AgentRequest("mission-test", "task-a", "validation.schema")
 RESULT = AgentResult("mission-test", "task-a", "validation.schema", "completed")
