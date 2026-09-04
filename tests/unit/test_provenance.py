@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 import pytest
-
 from sanatana_ai.provenance import validate_provenance
 
 
