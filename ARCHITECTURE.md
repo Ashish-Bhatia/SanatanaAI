@@ -107,20 +107,23 @@ The persistent adapter is a storage implementation detail. PostgreSQL or another
 
 ## Evidence and provenance pipeline
 
-The evidence model is versioned independently from runtime implementation. Version `1.0` currently defines source, passage, claim, evidence-reference, processing-record, and provenance-record contracts under `schemas/`.
+The evidence model is versioned independently from runtime implementation. Version `1.0` defines source, passage, claim, evidence-reference, processing-record, and provenance-record contracts under `schemas/`.
+
+The source boundary now includes a storage-neutral source registry. A source has stable identity, title, explicit source type, and non-empty metadata. Re-registering identical source data is idempotent; conflicting reuse of a source ID fails closed.
+
+Acquisition is represented separately from source identity. An acquisition record links to a registered source and records retrieval time, method, locator, content digest, and retrieval metadata. Acquisition timestamps must be timezone-aware so retrieval history remains unambiguous.
 
 The intended chain is:
 
 ```text
 Source
-  -> Text / Manuscript
+  -> Acquisition / Retrieval Record
+  -> Text / Manuscript Representation
   -> Passage
   -> Claim
   -> Evidence Reference
   -> Provenance / Processing History
 ```
-
-Evidence contracts require stable identifiers and explicit metadata. Claims carry an evidence class and provenance identifier. Evidence references connect a claim to an addressable passage. Processing records preserve the operation, responsible agent, inputs, outputs, and timestamp needed to reproduce transformations. Provenance validation fails closed when identity, source linkage, evidence classification, processing history, or schema version is invalid.
 
 Original-language text, transliteration, and translation remain separate representations. Competing translations and interpretations are retained as distinct evidence artifacts. AI synthesis remains explicitly classified as synthesis and never becomes primary textual evidence.
 
@@ -167,7 +170,8 @@ Contradictions and competing interpretations are represented rather than silentl
 
 ## Core data boundaries
 
-- Source: bibliographic and acquisition identity.
+- Source: stable bibliographic identity and source metadata.
+- Acquisition: retrieval event and content identity for a source.
 - Text/Manuscript: textual work or manuscript representation.
 - Passage: addressable evidence segment.
 - Claim: atomic knowledge assertion.
