@@ -21,13 +21,14 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Issue #6 is the active product workstream.
 - PR #21 remains open for the first Issue #6 increment and requires independent review.
 - PR #22 continues Issue #6 with source registration and acquisition metadata and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
-- PR #22 CI run #220 passed for the current head.
+- PR #22 current head is `69a1cf09c23771a7e8da569963534b8cbb2f69a9`.
+- PR #22 CI run #220 passed for the prior head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`. The current head contains an additional CI-trigger correction and has no completed CI run yet.
 - PR #23 continues Issue #6 with text representations and addressable passages and targets `feature/provenance-source-registry`.
-- PR #23 current head is `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
-- PR #23 CI run #221 failed at the formatting gate on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
-- The formatting failure was corrected at source in commit `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
-- Fresh CI for the corrected PR #23 head is required.
+- PR #23 current head is `7e91c622d08a30c8a3f3a09d5e02b0691aaf5ad7`.
+- PR #23 CI run #221 failed at formatting on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+- The formatting failure was corrected at source in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+- Additional text representation fixture and passage-schema corrections are committed on the current branch.
+- PR #23 CI run #223 attempt 2 is queued against the current PR head after rerunning the failed job.
 - PR #21 and PR #22 remain review-gated and must not be bypassed.
 - Issues #7 through #13 remain subsequent workstreams.
 
@@ -90,18 +91,19 @@ PR #23 establishes:
 - idempotent identity handling with conflicting-ID rejection
 - versioned text representation schema
 - passage schema linkage to text representation identity
+- representative text fixture and updated passage fixture
 - unit coverage for representation and passage invariants
 - architecture documentation for text/manuscript and passage boundaries
 
-The CI workflow is configured to validate pull requests targeting the provenance integration branches. PR #22 CI run #220 passed. PR #23 requires fresh CI validation after remediation of run #221.
+The CI workflow is configured to validate pull requests targeting the provenance integration branches. PR #22's last completed CI run #220 passed before its latest workflow-trigger-only update. PR #23 run #223 attempt 1 failed on formatting; the verified formatting defect was corrected, and attempt 2 is queued for the current head.
 
 ## Validation status
 
 PR #22 CI run #220 completed successfully for head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 
-PR #23 CI run #221 failed at formatting on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`. The verified failure was formatting in the text representation tests. The failure was corrected at source in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
-
-Fresh CI for PR #23 head `ba6aa84a0cd1fd7f4c512b36e767908c10122667` is required. No fresh success is asserted.
+PR #23 CI run #221 failed at formatting on earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+PR #23 CI run #223 attempt 1 failed at formatting because `tests/unit/test_text_representation.py` required Ruff formatting. The source was corrected in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+PR #23 CI run #223 attempt 2 is queued against current head `7e91c622d08a30c8a3f3a09d5e02b0691aaf5ad7`. No success is asserted.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review approval is recorded.
 
