@@ -59,7 +59,7 @@ def test_acquisition_is_linked_to_source() -> None:
 
 
 def test_acquisition_requires_timezone_aware_timestamp() -> None:
-    naive_timestamp = datetime.fromisoformat("2026-09-04T00:00:00")
+    naive_timestamp = datetime(2026, 9, 4)
     with pytest.raises(ValueError, match="timezone-aware"):
         AcquisitionRecord(
             id="acq-1",
