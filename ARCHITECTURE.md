@@ -109,9 +109,11 @@ The persistent adapter is a storage implementation detail. PostgreSQL or another
 
 The evidence model is versioned independently from runtime implementation. Version `1.0` defines source, passage, claim, evidence-reference, processing-record, and provenance-record contracts under `schemas/`.
 
-The source boundary now includes a storage-neutral source registry. A source has stable identity, title, explicit source type, and non-empty metadata. Re-registering identical source data is idempotent; conflicting reuse of a source ID fails closed.
+The source boundary includes a storage-neutral source registry. A source has stable identity, title, explicit source type, and non-empty metadata. Re-registering identical source data is idempotent; conflicting reuse of a source ID fails closed.
 
 Acquisition is represented separately from source identity. An acquisition record links to a registered source and records retrieval time, method, locator, content digest, and retrieval metadata. Acquisition timestamps must be timezone-aware so retrieval history remains unambiguous.
+
+Text and manuscript material is represented separately from acquisition. Each text representation has its own stable identity, source linkage, representation type, language, and text. Original-language text, transliteration, and translation are explicit representation types. A passage is addressable within one representation and must preserve matching source and language identity.
 
 The intended chain is:
 
@@ -125,7 +127,7 @@ Source
   -> Provenance / Processing History
 ```
 
-Original-language text, transliteration, and translation remain separate representations. Competing translations and interpretations are retained as distinct evidence artifacts. AI synthesis remains explicitly classified as synthesis and never becomes primary textual evidence.
+Competing translations and interpretations are retained as distinct evidence artifacts. AI synthesis remains explicitly classified as synthesis and never becomes primary textual evidence.
 
 ## Execution model
 
@@ -172,8 +174,8 @@ Contradictions and competing interpretations are represented rather than silentl
 
 - Source: stable bibliographic identity and source metadata.
 - Acquisition: retrieval event and content identity for a source.
-- Text/Manuscript: textual work or manuscript representation.
-- Passage: addressable evidence segment.
+- Text/Manuscript: textual work or manuscript representation tied to a source.
+- Passage: addressable evidence segment tied to one text representation.
 - Claim: atomic knowledge assertion.
 - Entity: identifiable person, place, text, school, concept, event, practice, or other domain object.
 - Relationship: typed connection between entities.
