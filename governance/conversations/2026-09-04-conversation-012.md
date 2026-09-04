@@ -31,6 +31,8 @@ PR #21 established versioned source, passage, claim, evidence-reference, process
 - CI run #217 reproduced the lint failures on the PR #22 merge ref. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
 - The verified source correction was committed as `a22700f0957324e4df4c6aec539856d0840e9874`.
 - Project state was synchronized after the latest remediation in commit `dd38b2c358ef7e0fba68866efddbe514d9a6572f`.
+- CI run #220 completed successfully for PR #22 head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
+- Project state was synchronized after CI #220 in commit `166feeea2ebf27abc5f279268e19dc20360c3547`.
 
 ## Validation
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
@@ -42,7 +44,7 @@ PR #22 CI run #212 failed at linting on the PR merge ref. The verified failure w
 
 PR #22 CI run #217 failed at linting on merge ref `85d495422cdd6ae60703563cf6c2d2a460017c5c`. The verified failures were `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
 
-The verified remediation is commit `a22700f0957324e4df4c6aec539856d0840e9874`. Fresh CI for the corrected head is required. No fresh CI result is asserted until GitHub exposes it.
+The verified remediation is commit `a22700f0957324e4df4c6aec539856d0840e9874`. CI run #220 subsequently completed successfully for the current PR #22 head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 
 No local test result is asserted here because execution has not been performed in this session.
 
@@ -50,4 +52,4 @@ No local test result is asserted here because execution has not been performed i
 The branch must follow the normal PR, CI, independent review, gate, and merge sequence. PR #21 remains open and still requires independent review. PR #22 requires its own successful CI and independent review before integration.
 
 ## Result
-The verified CI lint blocker was fixed at source without weakening the CI gate. Governance records now reflect the latest corrected branch state. Fresh validation remains required. The branch remains dedicated to Issue #6 and does not modify `main` directly.
+The verified CI lint blocker was fixed at source without weakening the CI gate. CI #220 is green for PR #22. Governance records were synchronized to the verified result. The branch remains dedicated to Issue #6 and does not modify `main` directly. Independent review gates remain outstanding before integration.
