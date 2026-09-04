@@ -13,7 +13,13 @@ def valid_record() -> dict[str, object]:
         "source_ids": ["source-1"],
         "evidence_class": "primary_textual_evidence",
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "processing_steps": [{"step_id": "step-1", "operation": "extract", "agent_id": "claim-extractor"}],
+        "processing_steps": [
+            {
+                "step_id": "step-1",
+                "operation": "extract",
+                "agent_id": "claim-extractor",
+            }
+        ],
     }
 
 
@@ -22,7 +28,9 @@ def test_valid_provenance_is_accepted() -> None:
     assert record.artifact_id == "claim-1"
 
 
-@pytest.mark.parametrize("field", ["id", "artifact_id", "source_ids", "evidence_class", "processing_steps"])
+@pytest.mark.parametrize(
+    "field", ["id", "artifact_id", "source_ids", "evidence_class", "processing_steps"]
+)
 def test_missing_required_provenance_fails(field: str) -> None:
     record = valid_record()
     del record[field]
