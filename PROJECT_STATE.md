@@ -20,9 +20,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Issue #4 is complete.
 - Issue #6 is the active product workstream.
 - PR #21 remains open for the first Issue #6 increment.
-- PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 is in progress for this head.
+- PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
 - PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `6d147a3091fe0df1bed910f60beb9280e91a293b`.
+- PR #22 current head is `023db184f23ec636430c739463788b6b1206bed8`; CI run #197 is in progress for this head.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -80,10 +80,9 @@ The CI workflow was corrected so pull requests targeting the provenance integrat
 ## Validation status
 
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
+PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
 
-PR #21 received CI-trigger synchronization commit `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 is currently in progress. No result is asserted until it completes.
-
-PR #22 has implementation commit `6d147a3091fe0df1bed910f60beb9280e91a293b` after the previously validated PR #21 head and requires its own full CI run before merge.
+PR #22 current head is `023db184f23ec636430c739463788b6b1206bed8`. CI run #195 failed at formatting because two files were not Ruff-formatted. The verified remediation was committed on the feature branch in `f5f30d22a1d87f0a2f9c8e342e81d2de563f3399` and `023db184f23ec636430c739463788b6b1206bed8`. Fresh CI run #197 is in progress. No result is asserted until it completes.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
