@@ -14,18 +14,19 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 
 - Repository: `Ashish-Bhatia/SanatanaAI`
 - Default branch: `main`
-- Active implementation branch: `feature/provenance-source-registry`
+- Active implementation branch: `feature/provenance-text-passages`
 - PR #17 is merged into `main`.
 - Recovery PR #20 is merged into `main` at `bd4c2386b225ee0439ce22b1766fe4da355a14ab`.
 - Issue #4 is complete.
 - Issue #6 is the active product workstream.
-- PR #21 remains open for the first Issue #6 increment.
-- PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 passed for this head.
-- PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `a22700f0957324e4df4c6aec539856d0840e9874`.
-- CI run #217 failed at Ruff linting on the PR #22 merge ref. The verified failures were `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
-- The lint failures were corrected at source in commit `a22700f0957324e4df4c6aec539856d0840e9874`.
-- Fresh CI for the corrected head is required and has not yet been exposed by GitHub.
+- PR #21 remains open for the first Issue #6 increment and requires independent review.
+- PR #22 continues Issue #6 with source registration and acquisition metadata and targets `feature/provenance-evidence-pipeline`.
+- PR #22 current head is `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
+- PR #22 CI run #220 passed for the current head.
+- PR #23 continues Issue #6 with text representations and addressable passages and targets `feature/provenance-source-registry`.
+- PR #23 current head is `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+- PR #23 has no completed CI run yet.
+- PR #21 and PR #22 remain review-gated and must not be bypassed.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -66,9 +67,9 @@ Requirement scope:
 
 ## Current implementation increments
 
-PR #21 establishes the versioned provenance contracts and fail-closed evidence-chain validation.
+PR #21 establishes versioned provenance contracts and fail-closed evidence-chain validation.
 
-Branch `feature/provenance-source-registry` continues the requirement with:
+PR #22 establishes:
 - storage-neutral `SourceRegistry`
 - stable source identity and idempotent registration
 - fail-closed conflicting source-ID reuse
@@ -76,24 +77,29 @@ Branch `feature/provenance-source-registry` continues the requirement with:
 - retrieval timestamp, method, locator, content digest, and metadata
 - timezone-aware acquisition timestamps
 - unit coverage for registry and acquisition invariants
-- architecture documentation for the new source/acquisition boundary
+- architecture documentation for the source/acquisition boundary
 
-The CI workflow was corrected so pull requests targeting the provenance integration branch are validated by the same mandatory gate used for `main`.
+PR #23 establishes:
+- storage-neutral `TextRepresentationRegistry`
+- explicit original, transliteration, and translation representation types
+- stable representation identity, source linkage, language, and non-empty text
+- addressable `PassageRecord` linked to one text representation
+- fail-closed unknown-representation and source/language mismatch checks
+- idempotent identity handling with conflicting-ID rejection
+- versioned text representation schema
+- passage schema linkage to text representation identity
+- unit coverage for representation and passage invariants
+- architecture documentation for text/manuscript and passage boundaries
+
+The CI workflow is configured to validate pull requests targeting the provenance integration branches. PR #22 CI run #220 passed. PR #23 requires its own CI validation after the branch is integrated with a base branch carrying the applicable workflow trigger.
 
 ## Validation status
 
-PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
-PR #21 CI run #192 passed for head `dfea857e4ac2eda862bba05902d49c216ef95453`.
+PR #22 CI run #220 completed successfully for head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 
-PR #22 CI run #209 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The source was corrected in subsequent remediation work.
+PR #23 has no completed CI run. No CI success is asserted for PR #23.
 
-PR #22 CI run #212 failed at linting. Ruff reported an `I001` import-ordering violation in `tests/unit/test_source_registry.py`. The source was corrected in subsequent remediation work.
-
-PR #22 CI run #217 failed at linting on merge ref `85d495422cdd6ae60703563cf6c2d2a460017c5c`. Ruff reported `I001` import ordering and `DTZ001` naive datetime construction in `tests/unit/test_source_registry.py`.
-
-The verified remediation is commit `a22700f0957324e4df4c6aec539856d0840e9874`. Fresh CI for the corrected head is required. No fresh CI result is asserted until GitHub exposes it.
-
-PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
+PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review approval is recorded.
 
 ## Delivery rules
 
