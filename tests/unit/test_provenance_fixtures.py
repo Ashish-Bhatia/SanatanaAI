@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 from jsonschema import validate
-
 from sanatana_ai.provenance import validate_evidence_chain
 
 ROOT = Path(__file__).resolve().parents[2]
