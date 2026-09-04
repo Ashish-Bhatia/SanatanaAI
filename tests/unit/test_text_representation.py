@@ -4,7 +4,11 @@ from dataclasses import replace
 
 import pytest
 
-from sanatana_ai.text_representation import PassageRecord, TextRepresentation, TextRepresentationRegistry
+from sanatana_ai.text_representation import (
+    PassageRecord,
+    TextRepresentation,
+    TextRepresentationRegistry,
+)
 
 
 def make_representation() -> TextRepresentation:
