@@ -37,11 +37,13 @@ Implemented on `feature/provenance-evidence-pipeline`:
 - Representative provenance fixtures and end-to-end evidence-chain tests.
 - Architecture and REQ-006 documentation.
 
-## CI remediation
+## CI remediation and validation
 
-CI run #176 failed at `ruff format --check backend tests` on head `5a6cd856216143973374a7543178515e9fbe4fd0`. The configured Ruff line length is 120. The provenance condition was corrected to the formatter-compatible single-line form in commit `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`.
-
-A fresh CI run has not yet been reported for the corrective head. The workstream remains blocked at CI validation until GitHub reports all required gates passing.
+- CI run #176 failed at `ruff format --check backend tests` on head `5a6cd856216143973374a7543178515e9fbe4fd0`.
+- The configured Ruff line length is 120. The provenance condition was corrected to the formatter-compatible single-line form in commit `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`.
+- The latest PR head is `97fe8e041f9e606919f6b6bb65747bcd5f71c0f8`.
+- CI run #182 completed successfully for the latest head.
+- PR #21 remains open and requires review before merge. No review submissions are currently recorded.
 
 ## Governance
 
