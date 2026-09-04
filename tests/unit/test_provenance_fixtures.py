@@ -16,6 +16,7 @@ def load_json(path: Path) -> dict[str, object]:
 def test_representative_provenance_fixtures_match_schemas() -> None:
     fixture_schema_pairs = {
         "source": "source_record.schema.json",
+        "text_representation": "text_representation.schema.json",
         "passage": "passage_record.schema.json",
         "claim": "claim_record.schema.json",
         "evidence_reference": "evidence_reference.schema.json",
