@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sanatanaai.local/schemas/text_representation.schema.json",
+  "title": "SanatanaAI Text Representation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "source_id", "representation_type", "language", "text"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "minLength": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "representation_type": {"enum": ["original", "transliteration", "translation"]},
+    "language": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1}
+  }
+}
