@@ -9,10 +9,11 @@ Continue Issue #6 from the authoritative GitHub state after PR #22 reached a ver
 - `main` remains the protected delivery branch and was not modified directly.
 - PR #21 remains open against `main` and still requires independent review approval.
 - PR #22 remains open against `feature/provenance-evidence-pipeline`.
-- PR #22 current head is `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
-- CI run #220 completed successfully for PR #22's current head.
+- PR #22 current head is `69a1cf09c23771a7e8da569963534b8cbb2f69a9`.
+- CI run #220 completed successfully for the prior PR #22 head `49e7cf7bb2af2aa218b468fa9bce34a783ee38ee`.
 - PR #23 remains open against `feature/provenance-source-registry`.
-- PR #23 current head is `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+- PR #23 current head is `a12d443c7748de0e41f3da64109e48b29b31a517`.
+- PR #23 CI run #223 attempt 2 is queued for the current head.
 - Issue #6 remains the highest-priority incomplete product workstream.
 
 ## Analysis and decision
@@ -30,22 +31,25 @@ Implemented:
 - Idempotent identical registration for representations and passages.
 - `schemas/text_representation.schema.json`.
 - Extended `schemas/passage_record.schema.json` with `representation_id`.
-- Unit tests for registry idempotency and cross-boundary invariants.
+- Representative text representation fixture and updated passage fixture.
+- Unit tests for registry idempotency, fixture validation, and cross-boundary invariants.
 - Architecture updates for text/manuscript and passage boundaries.
 - CI workflow trigger coverage for provenance feature branches.
-- Corrected formatting failures reported by CI #221.
+- Corrected formatting failure reported by CI #223 attempt 1.
 
 ## Pull request
 Opened PR #23 from `feature/provenance-text-passages` to `feature/provenance-source-registry`.
-Current PR #23 head after formatting remediation and governance synchronization is `7c603038cab41a18445ff8349d47e76b50b9893d`.
+Current PR #23 head after remediation and governance synchronization is `a12d443c7748de0e41f3da64109e48b29b31a517`.
 
 ## Validation
-PR #23 CI run #221 failed at the formatting gate for earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`. The failure was corrected in commit `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
-
-The current head has not yet produced a completed CI run. No CI success is claimed for PR #23.
+PR #23 CI run #221 failed at the formatting gate for earlier head `6077c0a00b57884fa3a0d734624687ab16abf72a`.
+PR #23 CI run #223 attempt 1 failed at the formatting gate because `tests/unit/test_text_representation.py` required Ruff formatting.
+The verified formatting defect was corrected in `ba6aa84a0cd1fd7f4c512b36e767908c10122667`.
+The current PR #23 head includes subsequent fixture, schema, and governance synchronization changes.
+PR #23 CI run #223 attempt 2 is queued against the current head. No CI success is claimed.
 
 ## Gate
 PR #21 and PR #22 remain independently review-gated. PR #23 must pass its applicable CI and independent review before integration.
 
 ## Next action
-Inspect the next CI result for PR #23. Fix any verified failure at source. Continue the remaining Issue #6 provenance processing-record work only after the representation/passage increment clears its required gates.
+Inspect CI run #223 attempt 2 to completion. Fix any verified failure at source. Do not merge around CI or independent-review requirements. Continue the remaining Issue #6 provenance processing-record work only after the representation/passage increment clears its required gates.
