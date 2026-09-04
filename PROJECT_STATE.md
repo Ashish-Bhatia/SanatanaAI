@@ -20,7 +20,9 @@ GitHub repository state is authoritative. ChatGPT conversation context is not au
 - Issue #4 is complete.
 - Issue #6 is the active product workstream.
 - PR #21 remains open for the first Issue #6 increment.
-- This branch continues Issue #6 from PR #21 head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
+- PR #21 current head is `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 is in progress for this head.
+- PR #22 continues Issue #6 from the PR #21 implementation and targets `feature/provenance-evidence-pipeline`.
+- PR #22 current head is `6d147a3091fe0df1bed910f60beb9280e91a293b`.
 - Issues #7 through #13 remain subsequent workstreams.
 
 ## Foundation completed
@@ -73,11 +75,15 @@ Branch `feature/provenance-source-registry` continues the requirement with:
 - unit coverage for registry and acquisition invariants
 - architecture documentation for the new source/acquisition boundary
 
+The CI workflow was corrected so pull requests targeting the provenance integration branch are validated by the same mandatory gate used for `main`.
+
 ## Validation status
 
 PR #21 CI run #191 passed for head `c2d18ee14f6c42e1f793e076d2a544071c802bdb`.
 
-The new branch has implementation commits after that validated head and therefore requires its own full CI run before its pull request is merged.
+PR #21 received CI-trigger synchronization commit `dfea857e4ac2eda862bba05902d49c216ef95453`; CI run #192 is currently in progress. No result is asserted until it completes.
+
+PR #22 has implementation commit `6d147a3091fe0df1bed910f60beb9280e91a293b` after the previously validated PR #21 head and requires its own full CI run before merge.
 
 PR #21 has one implementation review recorded by `Ashish-Bhatia` with state `COMMENTED`. No independent review submission is currently recorded.
 
