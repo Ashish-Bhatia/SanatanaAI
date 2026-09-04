@@ -43,7 +43,7 @@ Implemented on `feature/provenance-evidence-pipeline`:
 - The configured Ruff line length is 120. The provenance condition was corrected to the formatter-compatible single-line form in commit `f135c1068fcc1bdb9417f76d8f53df66c3cc1352`.
 - Governance synchronization subsequently moved the PR through intermediate heads.
 - CI run #184 completed successfully for PR #21 head `7ea737163911a3ebf1cde616a6a4860dbfdd499b`.
-- Subsequent governance synchronization commits require a fresh CI run before merge.
+- CI run #189 completed successfully for the current PR #21 head `e37631a7981da74274e5627417138c43a1c60a22`.
 - PR #21 remains open and requires an independent review before merge.
 
 ## Governance
