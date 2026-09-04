@@ -4,13 +4,15 @@
   "title": "Passage Record",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "id", "source_id", "locator", "text", "language"],
+  "required": ["schema_version", "id", "representation_id", "source_id", "locator", "text", "language"],
   "properties": {
     "schema_version": {"const": "1.0"},
     "id": {"type": "string", "minLength": 1},
+    "representation_id": {"type": "string", "minLength": 1},
     "source_id": {"type": "string", "minLength": 1},
     "locator": {"type": "string", "minLength": 1},
     "text": {"type": "string", "minLength": 1},
-    "language": {"type": "string", "minLength": 2}
+    "language": {"type": "string", "minLength": 2},
+    "text": {"type": "string", "minLength": 1}
   }
 }
